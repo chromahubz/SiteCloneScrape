@@ -650,7 +650,6 @@ async function analyzeBusinessInfo() {
 // Step 3: Recreate Website
 async function recreateWebsite() {
     const instructions = document.getElementById('design-instructions').value;
-    const loadingEl = document.getElementById('recreate-loading');
 
     if (!scrapedData) {
         showNotification('Please scrape a website first', 'warning');
@@ -658,7 +657,6 @@ async function recreateWebsite() {
     }
 
     setButtonLoading('recreate-btn', true, 'Creating Website...');
-    loadingEl.classList.remove('hidden');
 
     try {
         const response = await fetch(`${API_BASE}/api/recreate`, {
@@ -709,7 +707,6 @@ async function recreateWebsite() {
         showNotification('Error recreating website: ' + error.message, 'error');
     } finally {
         setButtonLoading('recreate-btn', false);
-        loadingEl.classList.add('hidden');
     }
 }
 

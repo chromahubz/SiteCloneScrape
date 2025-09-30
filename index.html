@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiteClone Pro - Website Scraper & Lead Generator | Lifetime Deal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#059669',       // Emerald-700 - Strong green with 4.5:1 contrast
+                        'primary-dark': '#047857',  // Emerald-800 - Darker green
+                        'primary-light': '#10b981', // Emerald-500 - Lighter green
+                        'success': '#16a34a',       // Green-600 - Success green
+                        'accent': '#dc2626',        // Red-600 - Accent red
+                        'info': '#2563eb',          // Blue-600 - Info blue
+                        'warning': '#d97706',       // Amber-600 - Warning orange
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-hero {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .loading {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #059669;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .feature-card {
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Notification System -->
+    <div id="notification-container" class="fixed top-4 right-4 z-50 max-w-sm space-y-2"></div>
+
+    <!-- Hero Section -->
+    <section class="gradient-hero text-white py-16 mb-12">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="mb-6">
+                <span class="bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                    🔥 LIFETIME DEAL - LIMITED TIME
+                </span>
+            </div>
+            <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                <span class="text-yellow-300">SiteClone</span> Pro
+            </h1>
+            <p class="text-2xl md:text-3xl mb-8 font-light">
+                Scrape Any Website → Generate Leads → Close Deals
+            </p>
+            <div class="grid md:grid-cols-3 gap-6 mb-8 text-left">
+                <div class="bg-white/10 backdrop-blur rounded-lg p-6">
+                    <i class="fas fa-spider text-3xl mb-4 text-yellow-300"></i>
+                    <h3 class="text-xl font-bold mb-2">Smart Scraping</h3>
+                    <p class="text-white/80">Extract any website's content, structure, and business info in seconds</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg p-6">
+                    <i class="fas fa-robot text-3xl mb-4 text-yellow-300"></i>
+                    <h3 class="text-xl font-bold mb-2">AI Recreation</h3>
+                    <p class="text-white/80">Generate modern, professional websites using advanced AI technology</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-lg p-6">
+                    <i class="fas fa-envelope-open-dollar text-3xl mb-4 text-yellow-300"></i>
+                    <h3 class="text-xl font-bold mb-2">Lead Generation</h3>
+                    <p class="text-white/80">Create personalized outreach campaigns that convert prospects to clients</p>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
+                <div class="text-center">
+                    <div class="text-4xl font-bold text-yellow-300">$2,997</div>
+                    <div class="text-lg line-through text-white/60">Regular Price</div>
+                </div>
+                <div class="text-6xl text-white/40">→</div>
+                <div class="text-center">
+                    <div class="text-6xl font-bold text-yellow-300">$69</div>
+                    <div class="text-lg text-white">One-Time Payment</div>
+                </div>
+            </div>
+            <div class="bg-orange text-white px-8 py-3 rounded-full text-xl font-bold inline-block mb-4">
+                <i class="fas fa-fire mr-2"></i>
+                96% OFF - ENDS SOON!
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-6">
+        <!-- Progress Steps -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 border border-gray-200">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">Try SiteClone Pro Now</h2>
+                <p class="text-xl text-gray-600">See how easy it is to turn any website into a business opportunity</p>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button id="tab-projects" class="tab-btn px-6 py-4 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all">
+                    <i class="fas fa-folder mr-2"></i>Projects
+                </button>
+                <button id="tab-scrape" class="tab-btn px-6 py-4 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark transition-all shadow-lg">
+                    <i class="fas fa-spider mr-2"></i>1. Scrape Website
+                </button>
+                <button id="tab-analyze" class="tab-btn px-6 py-4 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all">
+                    <i class="fas fa-search mr-2"></i>2. Business Info
+                </button>
+                <button id="tab-recreate" class="tab-btn px-6 py-4 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all">
+                    <i class="fas fa-magic mr-2"></i>3. Recreate Site
+                </button>
+                <button id="tab-outreach" class="tab-btn px-6 py-4 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all">
+                    <i class="fas fa-envelope mr-2"></i>4. Generate Outreach
+                </button>
+            </div>
+
+            <!-- Value Props -->
+            <div class="grid md:grid-cols-4 gap-4 text-center mb-8">
+                <div class="p-4">
+                    <div class="text-2xl font-bold text-primary mb-1">10x</div>
+                    <div class="text-sm text-gray-600">Faster Lead Gen</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-2xl font-bold text-primary mb-1">$50K+</div>
+                    <div class="text-sm text-gray-600">Monthly Potential</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-2xl font-bold text-primary mb-1">95%</div>
+                    <div class="text-sm text-gray-600">Time Saved</div>
+                </div>
+                <div class="p-4">
+                    <div class="text-2xl font-bold text-primary mb-1">∞</div>
+                    <div class="text-sm text-gray-600">Websites</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 0: Projects Management -->
+        <div id="content-projects" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                <div class="text-center mb-8">
+                    <div class="bg-primary/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-folder text-3xl text-primary"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Project Management</h2>
+                    <p class="text-xl text-gray-600">Save, load, and manage your website projects</p>
+                </div>
+
+                <!-- Quick Save Current Project -->
+                <div class="bg-blue-50 rounded-xl p-6 mb-6 border border-blue-200">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">
+                        <i class="fas fa-save text-blue-600 mr-2"></i>Save Current Project
+                    </h3>
+                    <div class="flex gap-4">
+                        <input id="project-name" type="text" placeholder="Enter project name..."
+                               class="flex-1 p-3 rounded-lg border-2 border-gray-200 focus:border-primary focus:outline-none">
+                        <button id="save-project-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors">
+                            <i class="fas fa-save mr-2"></i>Save Project
+                        </button>
+                    </div>
+                    <div class="mt-3 text-sm text-gray-600">
+                        <i class="fas fa-info-circle mr-2"></i>Saves your current website data, business info, and generated content
+                    </div>
+                </div>
+
+                <!-- Projects List -->
+                <div class="bg-gray-50 rounded-xl p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-gray-800">
+                            <i class="fas fa-history text-gray-600 mr-2"></i>Saved Projects
+                        </h3>
+                        <button id="refresh-projects-btn" class="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                            <i class="fas fa-sync-alt mr-2"></i>Refresh
+                        </button>
+                    </div>
+
+                    <div id="projects-loading" class="hidden flex justify-center items-center py-8">
+                        <div class="loading"></div>
+                        <span class="text-gray-600 ml-4">Loading projects...</span>
+                    </div>
+
+                    <div id="projects-list" class="space-y-3">
+                        <div class="text-center text-gray-500 py-8">
+                            <i class="fas fa-folder-open text-4xl mb-4"></i>
+                            <p class="text-lg">No saved projects yet</p>
+                            <p class="text-sm">Create your first project by scraping a website and saving it above</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Stats -->
+                <div class="grid md:grid-cols-3 gap-4 mt-6">
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <div class="text-2xl font-bold text-primary mb-1" id="total-projects">0</div>
+                        <div class="text-sm text-gray-600">Total Projects</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <div class="text-2xl font-bold text-primary mb-1" id="websites-scraped">0</div>
+                        <div class="text-sm text-gray-600">Websites Scraped</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                        <div class="text-2xl font-bold text-primary mb-1" id="outreach-generated">0</div>
+                        <div class="text-sm text-gray-600">Outreach Generated</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 1: Website Scraping -->
+        <div id="content-scrape" class="tab-content active">
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                <div class="text-center mb-8">
+                    <div class="bg-primary/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-spider text-3xl text-primary"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Smart Website Scraping</h2>
+                    <p class="text-xl text-gray-600">Enter any website URL and watch our AI extract valuable business data</p>
+                </div>
+
+                <div class="max-w-2xl mx-auto space-y-6">
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <label class="block text-gray-800 font-bold mb-3 text-lg">Target Website URL:</label>
+                        <input id="website-url" type="url" placeholder="https://smallbusiness.com"
+                               class="w-full p-4 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none text-lg">
+                        <div class="mt-3 text-sm text-gray-600">
+                            <i class="fas fa-lightbulb mr-2 text-yellow-500"></i>
+                            Try: restaurants, law firms, dentists, or any local business website
+                        </div>
+                    </div>
+
+                    <!-- Website Preview Section -->
+                    <div id="website-preview-section" class="hidden mt-6">
+                        <div class="bg-gray-50 rounded-xl p-6">
+                            <h3 class="text-lg font-bold text-gray-800 mb-4 text-center">
+                                <i class="fas fa-globe text-blue-500 mr-2"></i>Website Preview
+                            </h3>
+                            <div class="bg-white rounded-lg p-2 h-64 border-2 border-gray-200 overflow-hidden">
+                                <iframe id="scrape-preview-iframe" class="w-full h-full rounded" src="about:blank"></iframe>
+                            </div>
+                            <div class="text-center mt-3">
+                                <button id="refresh-preview-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition-colors text-sm">
+                                    <i class="fas fa-sync-alt mr-1"></i>Refresh Preview
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="scrape-btn" class="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 px-6 rounded-xl transition-colors text-xl shadow-lg mt-6">
+                        <i class="fas fa-rocket mr-2"></i>Extract Business Data
+                    </button>
+
+                    <div id="scrape-results" class="hidden bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 border-2 border-green-200">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>Data Extracted Successfully!
+                        </h3>
+                        <div id="scraped-content" class="text-gray-700 max-h-96 overflow-y-auto"></div>
+                        <div class="mt-4 p-4 bg-white rounded-lg border border-green-200">
+                            <div class="text-sm font-bold text-green-600 mb-2">
+                                <i class="fas fa-star mr-1"></i>What we found:
+                            </div>
+                            <div class="grid md:grid-cols-3 gap-4 text-sm">
+                                <div>✅ Business Information</div>
+                                <div>✅ Contact Details</div>
+                                <div>✅ Website Structure</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Business Analysis -->
+        <div id="content-analyze" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                <div class="text-center mb-8">
+                    <div class="bg-info/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-search text-3xl text-info"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Business Intelligence</h2>
+                    <p class="text-xl text-gray-600">Fill in business details and let AI find missing contact info</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-800 font-bold mb-2">Business Name:</label>
+                                <input id="business-name" type="text" class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-info focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-800 font-bold mb-2">Industry:</label>
+                                <input id="business-industry" type="text" class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-info focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-800 font-bold mb-2">Owner/Contact:</label>
+                                <input id="business-owner" type="text" class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-info focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-800 font-bold mb-2">Email:</label>
+                                <input id="business-email" type="email" class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-info focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-gray-800 font-bold mb-2">Current Website Issues:</label>
+                                <textarea id="website-issues" rows="4" class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-info focus:outline-none" placeholder="Outdated design, poor mobile experience, slow loading..."></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-gray-800 font-bold mb-2">Key Services/Products:</label>
+                                <textarea id="business-services" rows="4" class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-info focus:outline-none" placeholder="List main services or products..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Complete Scraped Data Section (Collapsible) - Centered -->
+                    <div class="mt-8">
+                        <button id="business-scraped-content-toggle" class="w-full bg-gray-100 hover:bg-gray-200 p-4 rounded-lg text-left font-bold flex items-center justify-between transition-colors border-2 border-gray-300">
+                            <span><i class="fas fa-file-alt text-gray-600 mr-2"></i>View Complete Scraped Data (<span id="business-content-length">0</span> characters)</span>
+                            <i id="business-content-chevron" class="fas fa-chevron-down text-gray-600"></i>
+                        </button>
+                        <div id="business-scraped-content-section" class="hidden mt-2 bg-white border-2 border-gray-200 rounded-lg p-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-bold text-gray-700">Complete Website Content:</span>
+                                <button id="business-copy-content" class="text-xs bg-blue-100 hover:bg-blue-200 px-3 py-1 rounded transition-colors">
+                                    <i class="fas fa-copy mr-1"></i>Copy All
+                                </button>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded max-h-96 overflow-y-auto text-sm whitespace-pre-wrap font-mono" id="business-scraped-content-display">
+                                No content available yet. Please scrape a website first.
+                            </div>
+                        </div>
+                    </div>
+
+                    <button id="analyze-btn" class="w-full mt-8 bg-info hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-colors text-xl shadow-lg">
+                        <i class="fas fa-chart-line mr-2"></i>AI Business Analysis
+                    </button>
+
+                    <!-- Raw Website Data Section (Collapsible) -->
+                    <div id="raw-data-section" class="hidden mt-8">
+                        <div class="bg-gray-50 rounded-xl border-2 border-gray-200">
+                            <button id="raw-data-toggle" class="w-full p-4 text-left bg-gray-100 hover:bg-gray-200 transition-colors rounded-t-xl border-b border-gray-200 flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <i class="fas fa-database text-gray-600 mr-3"></i>
+                                    <h3 class="text-lg font-bold text-gray-800">Raw Website Data</h3>
+                                    <span class="ml-2 text-sm text-gray-500">(Click to view complete scraped data)</span>
+                                </div>
+                                <i id="raw-data-chevron" class="fas fa-chevron-down text-gray-600 transition-transform"></i>
+                            </button>
+                            <div id="raw-data-content" class="hidden p-4">
+                                <div class="bg-white rounded-lg border border-gray-200 p-4 max-h-96 overflow-y-auto">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <span class="text-sm font-medium text-gray-700">Complete Website Content:</span>
+                                        <button id="copy-raw-data-btn" class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded transition-colors">
+                                            <i class="fas fa-copy mr-1"></i>Copy
+                                        </button>
+                                    </div>
+                                    <pre id="raw-data-display" class="text-xs text-gray-600 whitespace-pre-wrap font-mono leading-relaxed"></pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Website Recreation -->
+        <div id="content-recreate" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                <div class="text-center mb-8">
+                    <div class="bg-purple-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-magic text-3xl text-purple-600"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">AI Website Recreation</h2>
+                    <p class="text-xl text-gray-600">Watch AI transform outdated websites into modern masterpieces</p>
+                </div>
+
+                <div class="max-w-6xl mx-auto space-y-8">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-gray-50 rounded-xl p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">
+                                <i class="fas fa-eye text-red-500 mr-2"></i>Before: Current Website
+                            </h3>
+                            <div id="current-preview" class="bg-white rounded-lg p-4 h-80 border-2 border-gray-200 overflow-hidden">
+                                <iframe id="current-iframe" class="w-full h-full rounded" src="about:blank"></iframe>
+                            </div>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 border-2 border-green-200">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">
+                                <i class="fas fa-star text-green-500 mr-2"></i>After: AI-Generated
+                            </h3>
+                            <div id="new-preview" class="bg-white rounded-lg p-4 h-80 border-2 border-green-300 overflow-hidden">
+                                <div id="new-website-placeholder" class="flex items-center justify-center h-full text-gray-400">
+                                    <div class="text-center">
+                                        <i class="fas fa-robot fa-3x mb-4 text-purple-500"></i>
+                                        <p class="text-lg font-semibold">AI magic happens here</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Export Buttons (hidden until website is generated) -->
+                            <div id="website-export-buttons" class="hidden mt-4 flex gap-3 justify-center flex-wrap">
+                                <button id="view-live-btn" class="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-2 px-4 rounded-lg transition-all shadow-md transform hover:scale-105 hidden">
+                                    <i class="fas fa-external-link-alt mr-2"></i>View Live Site
+                                </button>
+                                <button id="download-website-btn" class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded-lg transition-all shadow-md">
+                                    <i class="fas fa-download mr-2"></i>Download HTML
+                                </button>
+                                <button id="download-package-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-all shadow-md">
+                                    <i class="fas fa-file-archive mr-2"></i>Download Package
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <label class="block text-gray-800 font-bold mb-3 text-lg">Custom Design Instructions:</label>
+                        <textarea id="design-instructions" rows="3" class="w-full p-4 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none" placeholder="Modern design, professional look, mobile-friendly, include contact forms, use company colors..."></textarea>
+                    </div>
+
+                    <button id="recreate-btn" class="w-full bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-emerald-900 text-white font-bold py-4 px-6 rounded-xl transition-all text-xl shadow-lg">
+                        <i class="fas fa-robot mr-2"></i>Generate Professional Website
+                    </button>
+
+                    <div id="recreate-loading" class="hidden flex justify-center items-center py-8">
+                        <div class="loading"></div>
+                        <span class="text-gray-600 ml-4 text-lg">AI is crafting your new website...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Outreach Generation -->
+        <div id="content-outreach" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                <div class="text-center mb-8">
+                    <div class="bg-warning/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-envelope-open-dollar text-3xl text-warning"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">Sales Outreach Generator</h2>
+                    <p class="text-xl text-gray-600">Create compelling proposals that convert prospects into paying clients</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto space-y-6">
+                    <div class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-xl p-6 border-2 border-yellow-200">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">
+                            <i class="fas fa-dollar-sign text-yellow-600 mr-2"></i>Your Business Details
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-gray-800 font-bold mb-2">Your Name/Company:</label>
+                                <input id="your-name" type="text" value="WebPro Solutions" class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-warning focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-gray-800 font-bold mb-2">Your Email:</label>
+                                <input id="your-email" type="email" value="hello@webprosolutions.com" class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-warning focus:outline-none">
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <label class="block text-gray-800 font-bold mb-2">Package Price:</label>
+                            <input id="package-price" type="text" value="$4,997" class="w-full p-3 rounded-xl border-2 border-gray-200 focus:border-warning focus:outline-none">
+                        </div>
+                    </div>
+
+                    <button id="generate-outreach-btn" class="w-full bg-gradient-to-r from-warning to-accent hover:from-accent hover:to-red-700 text-white font-bold py-4 px-6 rounded-xl transition-all text-xl shadow-lg">
+                        <i class="fas fa-paper-plane mr-2"></i>Generate Sales Materials
+                    </button>
+
+                    <div id="outreach-results" class="hidden space-y-6">
+                        <div class="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-6 border-2 border-green-200">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">
+                                <i class="fas fa-envelope text-green-600 mr-2"></i>Cold Email Template:
+                            </h3>
+                            <div id="email-content" class="bg-white p-4 rounded-lg text-gray-700 whitespace-pre-wrap border border-green-200"></div>
+                        </div>
+
+                        <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border-2 border-blue-200">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">
+                                <i class="fas fa-file-contract text-blue-600 mr-2"></i>Professional Proposal:
+                            </h3>
+                            <div id="proposal-content" class="bg-white p-4 rounded-lg text-gray-700 whitespace-pre-wrap border border-blue-200 max-h-96 overflow-y-auto"></div>
+                        </div>
+
+                        <div class="flex space-x-4">
+                            <button id="copy-email-btn" class="flex-1 bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-xl transition-colors">
+                                <i class="fas fa-copy mr-2"></i>Copy Email
+                            </button>
+                            <button id="copy-proposal-btn" class="flex-1 bg-info hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-colors">
+                                <i class="fas fa-file-alt mr-2"></i>Copy Proposal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Social Proof & CTA Section -->
+    <section class="bg-gray-900 text-white py-16 mt-16">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold mb-8">Join 2,847 Entrepreneurs Making $10K+/Month</h2>
+
+            <!-- Testimonials -->
+            <div class="grid md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-white/10 backdrop-blur rounded-xl p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%234285f4'/%3E%3C/svg%3E" class="w-12 h-12 rounded-full mr-4" alt="User">
+                        <div class="text-left">
+                            <div class="font-bold">Marcus Chen</div>
+                            <div class="text-sm text-gray-300">Digital Agency Owner</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">"Generated $23K in new clients in just 2 weeks using SiteClone Pro. The AI websites are incredible!"</p>
+                    <div class="text-yellow-400 text-xl mt-2">★★★★★</div>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur rounded-xl p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%2300d084'/%3E%3C/svg%3E" class="w-12 h-12 rounded-full mr-4" alt="User">
+                        <div class="text-left">
+                            <div class="font-bold">Sarah Williams</div>
+                            <div class="text-sm text-gray-300">Freelance Web Designer</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">"This tool literally 10x'd my productivity. I can now handle 5x more clients with better results."</p>
+                    <div class="text-yellow-400 text-xl mt-2">★★★★★</div>
+                </div>
+
+                <div class="bg-white/10 backdrop-blur rounded-xl p-6">
+                    <div class="flex items-center mb-4">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23ff6b35'/%3E%3C/svg%3E" class="w-12 h-12 rounded-full mr-4" alt="User">
+                        <div class="text-left">
+                            <div class="font-bold">David Rodriguez</div>
+                            <div class="text-sm text-gray-300">Marketing Consultant</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">"Closed 8 new deals this month. The outreach templates are pure gold!"</p>
+                    <div class="text-yellow-400 text-xl mt-2">★★★★★</div>
+                </div>
+            </div>
+
+            <!-- Final CTA -->
+            <div class="bg-gradient-to-r from-appsumo to-appsumo-dark rounded-2xl p-8 max-w-4xl mx-auto">
+                <div class="text-6xl font-bold text-yellow-300 mb-4">$69</div>
+                <div class="text-2xl mb-6">One-Time Payment • Lifetime Access</div>
+                <div class="grid md:grid-cols-2 gap-8 text-left mb-8">
+                    <div>
+                        <h4 class="font-bold text-xl mb-4">✅ What You Get:</h4>
+                        <ul class="space-y-2">
+                            <li>• Unlimited website scraping</li>
+                            <li>• AI website recreation</li>
+                            <li>• Lead generation tools</li>
+                            <li>• Email & proposal templates</li>
+                            <li>• Commercial license</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-xl mb-4">🚀 Perfect For:</h4>
+                        <ul class="space-y-2">
+                            <li>• Web designers & developers</li>
+                            <li>• Digital marketing agencies</li>
+                            <li>• Freelancers & consultants</li>
+                            <li>• Business owners</li>
+                            <li>• Anyone wanting more clients</li>
+                        </ul>
+                    </div>
+                </div>
+                <button class="bg-yellow-400 text-gray-900 px-12 py-4 rounded-xl text-2xl font-bold hover:bg-yellow-300 transition-colors shadow-2xl">
+                    <i class="fas fa-shopping-cart mr-3"></i>GET LIFETIME ACCESS NOW
+                </button>
+                <div class="text-sm mt-4 text-yellow-200">
+                    <i class="fas fa-lock mr-2"></i>60-Day Money-Back Guarantee • Secure Checkout
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="text-2xl font-bold mb-2">SiteClone Pro</div>
+            <div class="text-gray-400 mb-4">The Ultimate Website Scraping & Lead Generation Tool</div>
+            <div class="text-sm text-gray-500">
+                © 2025 SiteClone Pro. All rights reserved. | <a href="#" class="hover:text-white">Privacy Policy</a> | <a href="#" class="hover:text-white">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

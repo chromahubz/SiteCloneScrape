@@ -650,13 +650,14 @@ async function analyzeBusinessInfo() {
 // Step 3: Recreate Website
 async function recreateWebsite() {
     const instructions = document.getElementById('design-instructions').value;
+    const versionCount = parseInt(document.getElementById('version-count').value) || 1;
 
     if (!scrapedData) {
         showNotification('Please scrape a website first', 'warning');
         return;
     }
 
-    setButtonLoading('recreate-btn', true, 'Creating Website...');
+    setButtonLoading('recreate-btn', true, `Creating ${versionCount} version${versionCount > 1 ? 's' : ''}...`);
 
     try {
         const response = await fetch(`${API_BASE}/api/recreate`, {
@@ -667,7 +668,8 @@ async function recreateWebsite() {
             body: JSON.stringify({
                 scrapedData,
                 businessInfo,
-                instructions: instructions || 'Create a modern, professional website'
+                instructions: instructions || 'Create a modern, professional website',
+                versionCount
             })
         });
 
@@ -677,14 +679,12 @@ async function recreateWebsite() {
             throw new Error(data.error);
         }
 
+        // Store all versions
         generatedWebsite = data;
         hostedSite = data.hostedSite || null;
 
-        // Display the new website
-        const previewEl = document.getElementById('new-preview');
-        previewEl.innerHTML = `
-            <iframe class="w-full h-full rounded" srcdoc="${data.html.replace(/"/g, '&quot;')}"></iframe>
-        `;
+        // Display all versions with selector
+        displayMultipleVersions(data.versions);
 
         // Show export buttons
         document.getElementById('website-export-buttons').classList.remove('hidden');
@@ -695,13 +695,13 @@ async function recreateWebsite() {
         // Enable next tab
         document.getElementById('tab-outreach').classList.remove('text-white/50');
 
-        showNotification('Website recreation complete! You can now export your website or generate outreach materials.', 'success');
+        showNotification(`${data.totalVersions} website version${data.totalVersions > 1 ? 's' : ''} generated! Pick your favorite and export it.`, 'success');
 
-        // Auto-advance to next tab after 3 seconds (longer to let user see the result)
+        // Auto-advance to next tab after 5 seconds
         setTimeout(() => {
             document.getElementById('tab-outreach').click();
             showNotification('📧 Ready to generate outreach materials!', 'info', 3000);
-        }, 3000);
+        }, 5000);
 
     } catch (error) {
         showNotification('Error recreating website: ' + error.message, 'error');
@@ -709,6 +709,72 @@ async function recreateWebsite() {
         setButtonLoading('recreate-btn', false);
     }
 }
+
+// Display multiple website versions with selector
+function displayMultipleVersions(versions) {
+    if (!versions || versions.length === 0) return;
+
+    const previewEl = document.getElementById('new-preview');
+
+    // Create version selector if multiple versions
+    let versionSelectorHTML = '';
+    if (versions.length > 1) {
+        versionSelectorHTML = `
+            <div class="mb-4 flex gap-2 justify-center flex-wrap">
+                ${versions.map((v, idx) => `
+                    <button
+                        onclick="switchVersion(${idx})"
+                        id="version-btn-${idx}"
+                        class="px-4 py-2 rounded-lg font-semibold transition-all ${idx === 0 ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}"
+                    >
+                        Version ${v.versionNumber}
+                    </button>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    // Create preview container for each version
+    const versionsHTML = versions.map((version, idx) => `
+        <div id="version-preview-${idx}" class="version-preview ${idx === 0 ? '' : 'hidden'} h-full">
+            <iframe class="w-full h-full rounded" srcdoc="${version.html.replace(/"/g, '&quot;')}"></iframe>
+        </div>
+    `).join('');
+
+    previewEl.innerHTML = `
+        ${versionSelectorHTML}
+        <div class="relative" style="height: ${versions.length > 1 ? 'calc(100% - 3rem)' : '100%'}">
+            ${versionsHTML}
+        </div>
+    `;
+}
+
+// Switch between versions
+window.switchVersion = function(versionIndex) {
+    const allPreviews = document.querySelectorAll('.version-preview');
+    const allButtons = document.querySelectorAll('[id^="version-btn-"]');
+
+    allPreviews.forEach((preview, idx) => {
+        if (idx === versionIndex) {
+            preview.classList.remove('hidden');
+        } else {
+            preview.classList.add('hidden');
+        }
+    });
+
+    allButtons.forEach((btn, idx) => {
+        if (idx === versionIndex) {
+            btn.className = 'px-4 py-2 rounded-lg font-semibold transition-all bg-green-600 text-white';
+        } else {
+            btn.className = 'px-4 py-2 rounded-lg font-semibold transition-all bg-gray-200 text-gray-700 hover:bg-gray-300';
+        }
+    });
+
+    // Update the active version for export
+    if (generatedWebsite && generatedWebsite.versions) {
+        generatedWebsite.activeVersion = generatedWebsite.versions[versionIndex];
+    }
+};
 
 // Step 4: Generate Outreach
 async function generateOutreach() {
@@ -794,15 +860,19 @@ async function copyToClipboard(elementId) {
 
 // Export: Download Website HTML
 function downloadWebsite() {
-    if (!generatedWebsite || !generatedWebsite.html) {
+    // Get the active version or fallback to the generated website
+    const websiteToDownload = generatedWebsite?.activeVersion || generatedWebsite?.versions?.[0] || generatedWebsite;
+
+    if (!websiteToDownload || !websiteToDownload.html) {
         showNotification('No website to download. Please generate a website first.', 'warning');
         return;
     }
 
     const businessName = businessInfo.name || 'Website';
-    const fileName = `${businessName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_website.html`;
+    const versionLabel = websiteToDownload.versionNumber ? `_v${websiteToDownload.versionNumber}` : '';
+    const fileName = `${businessName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_website${versionLabel}.html`;
 
-    const blob = new Blob([generatedWebsite.html], { type: 'text/html' });
+    const blob = new Blob([websiteToDownload.html], { type: 'text/html' });
     const url = window.URL.createObjectURL(blob);
 
     const a = document.createElement('a');
@@ -823,6 +893,9 @@ async function downloadPackage() {
         return;
     }
 
+    // Get the active version or fallback to the generated website
+    const websiteToExport = generatedWebsite?.activeVersion || generatedWebsite?.versions?.[0] || generatedWebsite;
+
     setButtonLoading('download-package-btn', true, 'Creating Package...');
 
     try {
@@ -832,7 +905,7 @@ async function downloadPackage() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                generatedWebsite,
+                generatedWebsite: websiteToExport,
                 businessInfo,
                 scrapedData
             })

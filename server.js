@@ -211,7 +211,7 @@ app.post('/api/analyze', async (req, res) => {
 // Recreate website endpoint
 app.post('/api/recreate', async (req, res) => {
     try {
-        const { scrapedData, businessInfo, instructions } = req.body;
+        const { scrapedData, businessInfo, instructions, versionCount = 1 } = req.body;
 
         // Input validation
         if (!scrapedData) {
@@ -235,6 +235,9 @@ app.post('/api/recreate', async (req, res) => {
             });
         }
 
+        // Validate version count
+        const numVersions = Math.min(Math.max(parseInt(versionCount) || 1, 1), 5); // Limit to 1-5 versions
+
         // Sanitize inputs
         const sanitizedBusinessInfo = {
             ...businessInfo,
@@ -245,38 +248,62 @@ app.post('/api/recreate', async (req, res) => {
 
         const sanitizedInstructions = instructions ? validateInput.sanitizeString(instructions) : '';
 
-        console.log('🤖 Recreating website for:', sanitizedBusinessInfo.name);
+        console.log(`🤖 Generating ${numVersions} website version(s) for:`, sanitizedBusinessInfo.name);
 
-        // Generate new website with AI
-        const newWebsite = await generateWebsiteWithAI(scrapedData, sanitizedBusinessInfo, sanitizedInstructions);
+        // Generate multiple versions
+        const versions = [];
+        for (let i = 0; i < numVersions; i++) {
+            console.log(`   🎨 Creating version ${i + 1}/${numVersions}...`);
 
-        if (!newWebsite) {
+            // Add variation instruction for multiple versions
+            const versionInstruction = numVersions > 1
+                ? `${sanitizedInstructions}\n\n[Version ${i + 1}: Create a unique design variation with different layout, color scheme, or style approach]`
+                : sanitizedInstructions;
+
+            const newWebsite = await generateWebsiteWithAI(scrapedData, sanitizedBusinessInfo, versionInstruction);
+
+            if (newWebsite) {
+                versions.push({
+                    ...newWebsite,
+                    versionNumber: i + 1,
+                    versionId: Math.random().toString(36).substring(2, 15)
+                });
+                console.log(`   ✅ Version ${i + 1} generated successfully`);
+            } else {
+                console.log(`   ⚠️ Version ${i + 1} generation failed`);
+            }
+        }
+
+        if (versions.length === 0) {
             return res.status(500).json({
-                error: 'Failed to generate website'
+                error: 'Failed to generate any website versions'
             });
         }
 
-        // Store generated website
+        // Store all generated versions
         const projectId = Math.random().toString(36).substring(2, 15);
         generatedProjects.set(projectId, {
-            ...newWebsite,
+            versions,
             businessInfo: sanitizedBusinessInfo,
             timestamp: new Date()
         });
 
-        // Automatically host the website for live preview
+        // Automatically host the first version for live preview
         let hostedSite = null;
         try {
-            hostedSite = await saveHostedWebsite(newWebsite, sanitizedBusinessInfo);
-            console.log('✅ Website automatically hosted for live preview');
+            hostedSite = await saveHostedWebsite(versions[0], sanitizedBusinessInfo);
+            console.log('✅ Version 1 automatically hosted for live preview');
         } catch (error) {
             console.log('⚠️ Could not auto-host website, manual hosting still available');
         }
 
+        console.log(`🎉 Generated ${versions.length} version(s) successfully`);
+
         res.json({
-            ...newWebsite,
+            versions,
             projectId,
-            hostedSite
+            hostedSite,
+            totalVersions: versions.length
         });
 
     } catch (error) {

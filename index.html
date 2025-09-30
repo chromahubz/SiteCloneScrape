@@ -439,6 +439,14 @@
                         <textarea id="design-instructions" rows="3" class="w-full p-4 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none" placeholder="Modern design, professional look, mobile-friendly, include contact forms, use company colors..."></textarea>
                     </div>
 
+                    <div class="bg-gray-50 rounded-xl p-6">
+                        <label class="block text-gray-800 font-bold mb-3 text-lg">Number of Website Versions to Generate:</label>
+                        <div class="flex items-center gap-4">
+                            <input type="number" id="version-count" min="1" max="5" value="1" class="w-24 p-3 rounded-xl border-2 border-gray-200 focus:border-primary focus:outline-none text-center text-lg font-bold">
+                            <span class="text-gray-600">Generate multiple versions and pick the best one (1-5)</span>
+                        </div>
+                    </div>
+
                     <button id="recreate-btn" class="w-full bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-emerald-900 text-white font-bold py-4 px-6 rounded-xl transition-all text-xl shadow-lg">
                         <i class="fas fa-robot mr-2"></i>Generate Professional Website
                     </button>

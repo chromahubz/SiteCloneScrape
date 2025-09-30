@@ -1056,7 +1056,7 @@ async function generateWebsiteWithAI(scrapedData, businessInfo, instructions) {
 Business: ${businessInfo.name}
 Industry: ${businessInfo.industry}
 Services: ${businessInfo.services}
-Current Website Content: ${scrapedData?.content?.substring(0, 2000) || 'No content'}
+Current Website Content: ${scrapedData?.content?.substring(0, 50000) || 'No content'}
 
 Instructions: ${instructions}
 

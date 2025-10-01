@@ -687,6 +687,11 @@ async function recreateWebsite() {
         generatedWebsite = data;
         hostedSite = data.hostedSite || null;
 
+        // Set the first version as active by default
+        if (data.versions && data.versions.length > 0) {
+            generatedWebsite.activeVersion = data.versions[0];
+        }
+
         // Display all versions with selector
         displayMultipleVersions(data.versions);
 

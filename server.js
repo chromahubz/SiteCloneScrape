@@ -329,6 +329,71 @@ app.post('/api/recreate', async (req, res) => {
     }
 });
 
+// Modify website endpoint - iterative AI changes
+app.post('/api/modify-website', async (req, res) => {
+    try {
+        const { currentHTML, modificationRequest, businessInfo, scrapedData } = req.body;
+
+        // Input validation
+        if (!currentHTML || !modificationRequest) {
+            return res.status(400).json({
+                error: 'Current HTML and modification request are required',
+                field: !currentHTML ? 'currentHTML' : 'modificationRequest'
+            });
+        }
+
+        if (!modificationRequest.trim() || modificationRequest.trim().length < 3) {
+            return res.status(400).json({
+                error: 'Please provide a more detailed modification request (at least 3 characters)',
+                field: 'modificationRequest'
+            });
+        }
+
+        // Sanitize inputs
+        const sanitizedRequest = validateInput.sanitizeString(modificationRequest);
+
+        console.log('🔧 Modifying website with request:', sanitizedRequest.substring(0, 100));
+
+        // Call AI to modify the website
+        const modifiedWebsite = await modifyWebsiteWithAI(currentHTML, sanitizedRequest, businessInfo, scrapedData);
+
+        if (!modifiedWebsite) {
+            return res.status(500).json({
+                error: 'Failed to modify website'
+            });
+        }
+
+        console.log('✅ Website modified successfully');
+
+        res.json({
+            success: true,
+            html: modifiedWebsite.html,
+            modifiedAt: new Date().toISOString()
+        });
+
+    } catch (error) {
+        console.error('Website modification error:', error);
+
+        if (error.message.includes('quota') || error.message.includes('limit')) {
+            return res.status(429).json({
+                error: 'API quota exceeded. Please try again later.',
+                retryAfter: 60
+            });
+        }
+
+        if (error.message.includes('timeout')) {
+            return res.status(408).json({
+                error: 'Modification request timed out. Please try again.'
+            });
+        }
+
+        res.status(500).json({
+            error: 'Failed to modify website. Please try again.',
+            details: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
+    }
+});
+
 // Generate outreach endpoint
 app.post('/api/outreach', async (req, res) => {
     try {
@@ -1205,6 +1270,63 @@ Return ONLY the complete HTML code, no explanations.`;
             generatedAt: new Date().toISOString(),
             error: error.message
         };
+    }
+}
+
+// AI Website Modification - Iterative changes
+async function modifyWebsiteWithAI(currentHTML, modificationRequest, businessInfo, scrapedData) {
+    try {
+        const { GoogleGenerativeAI } = require('@google/generative-ai');
+        const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+
+        // Get available images if scrapedData is provided
+        const images = scrapedData?.images || [];
+        let imageSection = '';
+        if (images.length > 0) {
+            imageSection = `\n\nAVAILABLE IMAGES (${images.length} total, showing ${Math.min(images.length, 30)}):\n`;
+            images.slice(0, 30).forEach((img, index) => {
+                imageSection += `${index + 1}. ${img.url}${img.alt ? ` (alt: "${img.alt}")` : ''}\n`;
+            });
+        }
+
+        const prompt = `You are a professional web developer. Modify the existing HTML website based on the user's request.
+
+CURRENT WEBSITE HTML (${currentHTML.length} characters):
+${currentHTML}${imageSection}
+
+USER'S MODIFICATION REQUEST:
+${modificationRequest}
+
+IMPORTANT INSTRUCTIONS:
+- Make ONLY the changes requested by the user
+- Maintain the existing design structure and Tailwind CSS styling
+- Keep all existing content unless the user specifically asks to change it
+- If adding images, use the available images list above or use https://images.unsplash.com/ placeholders
+- Ensure the website remains responsive and mobile-friendly
+- Fix any errors or broken elements if you notice them
+- Return ONLY the complete modified HTML code, no explanations
+
+Return ONLY the complete HTML code, no explanations.`;
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const html = response.text();
+
+        // Clean up the HTML (remove markdown formatting if present)
+        const cleanHtml = html
+            .replace(/```html/g, '')
+            .replace(/```/g, '')
+            .trim();
+
+        return {
+            html: cleanHtml,
+            modifiedAt: new Date().toISOString()
+        };
+
+    } catch (error) {
+        console.error('AI Website Modification error:', error);
+        throw error;
     }
 }
 

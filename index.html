@@ -396,26 +396,52 @@
                 </div>
 
                 <div class="max-w-6xl mx-auto space-y-8">
-                    <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Before Preview - Collapsible -->
+                    <div class="space-y-8">
                         <div class="bg-gray-50 rounded-xl p-6">
-                            <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">
-                                <i class="fas fa-eye text-red-500 mr-2"></i>Before: Current Website
-                            </h3>
-                            <div id="current-preview" class="bg-white rounded-lg p-4 h-80 border-2 border-gray-200 overflow-hidden">
-                                <iframe id="current-iframe" class="w-full h-full rounded" src="about:blank"></iframe>
+                            <button id="toggle-before-preview" class="w-full flex items-center justify-between text-xl font-bold text-gray-800 mb-4 hover:text-primary transition-colors">
+                                <span>
+                                    <i class="fas fa-eye text-red-500 mr-2"></i>Before: Current Website
+                                </span>
+                                <i id="before-preview-icon" class="fas fa-chevron-down transition-transform"></i>
+                            </button>
+                            <div id="current-preview-container" class="hidden">
+                                <div id="current-preview" class="bg-white rounded-lg p-4 h-[600px] border-2 border-gray-200 overflow-hidden">
+                                    <iframe id="current-iframe" class="w-full h-full rounded" src="about:blank"></iframe>
+                                </div>
                             </div>
                         </div>
 
+                        <!-- After Preview - Larger -->
                         <div class="bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-6 border-2 border-green-200">
                             <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">
-                                <i class="fas fa-star text-green-500 mr-2"></i>After: AI-Generated
+                                <i class="fas fa-star text-green-500 mr-2"></i>After: AI-Generated Website
                             </h3>
-                            <div id="new-preview" class="bg-white rounded-lg p-4 h-80 border-2 border-green-300 overflow-hidden">
+                            <div id="new-preview" class="bg-white rounded-lg p-4 h-[600px] border-2 border-green-300 overflow-hidden">
                                 <div id="new-website-placeholder" class="flex items-center justify-center h-full text-gray-400">
                                     <div class="text-center">
                                         <i class="fas fa-robot fa-3x mb-4 text-purple-500"></i>
                                         <p class="text-lg font-semibold">AI magic happens here</p>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- Modification Interface (shown after generation) -->
+                            <div id="website-modification-interface" class="hidden mt-6 space-y-4">
+                                <div class="bg-purple-50 border-2 border-purple-200 rounded-xl p-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h4 class="text-lg font-bold text-purple-900 flex items-center">
+                                            <i class="fas fa-magic mr-2"></i>Modify Your Website with AI
+                                        </h4>
+                                        <button id="undo-modification-btn" class="hidden bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg transition-all shadow-md text-sm">
+                                            <i class="fas fa-undo mr-1"></i>Undo Last Change
+                                        </button>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mb-3">Ask AI to make changes to your generated website. Be specific!</p>
+                                    <textarea id="modification-request" rows="3" class="w-full p-3 rounded-lg border-2 border-purple-200 focus:border-purple-400 focus:outline-none resize-none" placeholder="Example: Change the hero background to blue, add more spacing between sections, make the contact form larger, use a different font..."></textarea>
+                                    <button id="modify-website-btn" class="w-full mt-3 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-lg transition-all shadow-md">
+                                        <i class="fas fa-wand-magic-sparkles mr-2"></i>Apply Changes
+                                    </button>
                                 </div>
                             </div>
 

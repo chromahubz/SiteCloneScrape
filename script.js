@@ -5,6 +5,7 @@ let scrapedData = null;
 let businessInfo = {};
 let generatedWebsite = null;
 let hostedSite = null;
+let modificationHistory = []; // Stack of previous versions for undo
 
 // Input validation utilities
 const validators = {
@@ -183,6 +184,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('analyze-btn').addEventListener('click', analyzeBusinessInfo);
     document.getElementById('recreate-btn').addEventListener('click', recreateWebsite);
     document.getElementById('generate-outreach-btn').addEventListener('click', generateOutreach);
+    document.getElementById('modify-website-btn').addEventListener('click', modifyWebsite);
+    document.getElementById('undo-modification-btn').addEventListener('click', undoModification);
+    document.getElementById('toggle-before-preview').addEventListener('click', toggleBeforePreview);
 
     // Business Intelligence - Scraped Content Toggle
     const businessToggleBtn = document.getElementById('business-scraped-content-toggle');
@@ -714,6 +718,10 @@ async function recreateWebsite() {
 function displayMultipleVersions(versions) {
     if (!versions || versions.length === 0) return;
 
+    // Clear modification history when displaying new versions
+    modificationHistory = [];
+    document.getElementById('undo-modification-btn').classList.add('hidden');
+
     const previewEl = document.getElementById('new-preview');
 
     // Create version selector if multiple versions
@@ -747,6 +755,9 @@ function displayMultipleVersions(versions) {
             ${versionsHTML}
         </div>
     `;
+
+    // Show the modification interface
+    document.getElementById('website-modification-interface').classList.remove('hidden');
 }
 
 // Switch between versions
@@ -774,7 +785,155 @@ window.switchVersion = function(versionIndex) {
     if (generatedWebsite && generatedWebsite.versions) {
         generatedWebsite.activeVersion = generatedWebsite.versions[versionIndex];
     }
+
+    // Clear modification history when switching versions
+    modificationHistory = [];
+    document.getElementById('undo-modification-btn').classList.add('hidden');
 };
+
+// Modify Website with AI
+async function modifyWebsite() {
+    const modificationRequest = document.getElementById('modification-request').value.trim();
+
+    if (!modificationRequest) {
+        showNotification('⚠️ Please describe what changes you want to make', 'warning');
+        return;
+    }
+
+    if (!generatedWebsite || !generatedWebsite.activeVersion) {
+        showNotification('❌ No website to modify. Please generate a website first.', 'error');
+        return;
+    }
+
+    setButtonLoading('modify-website-btn', true, 'Applying Changes...');
+
+    try {
+        const currentHTML = generatedWebsite.activeVersion.html;
+
+        // Save current version to history BEFORE making changes
+        modificationHistory.push({
+            html: currentHTML,
+            timestamp: new Date().toISOString(),
+            request: modificationRequest
+        });
+
+        const response = await fetch(`${API_BASE}/api/modify-website`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                currentHTML,
+                modificationRequest,
+                businessInfo,
+                scrapedData
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            // Remove from history if modification failed
+            modificationHistory.pop();
+            throw new Error(data.error || 'Failed to modify website');
+        }
+
+        // Update the active version with the modified HTML
+        generatedWebsite.activeVersion.html = data.html;
+
+        // Find the active version index and update it
+        if (generatedWebsite.versions) {
+            const activeIndex = generatedWebsite.versions.findIndex(v =>
+                v.versionId === generatedWebsite.activeVersion.versionId
+            );
+            if (activeIndex !== -1) {
+                generatedWebsite.versions[activeIndex].html = data.html;
+            }
+        }
+
+        // Update the preview iframe
+        const activePreview = document.querySelector('.version-preview:not(.hidden)');
+        if (activePreview) {
+            const iframe = activePreview.querySelector('iframe');
+            if (iframe) {
+                iframe.srcdoc = data.html;
+            }
+        }
+
+        // Clear the modification request
+        document.getElementById('modification-request').value = '';
+
+        // Show undo button
+        document.getElementById('undo-modification-btn').classList.remove('hidden');
+
+        showNotification('✅ Website modified successfully!', 'success');
+
+    } catch (error) {
+        console.error('Error modifying website:', error);
+        showNotification('❌ Error modifying website: ' + error.message, 'error');
+    } finally {
+        setButtonLoading('modify-website-btn', false);
+    }
+}
+
+// Undo last modification
+function undoModification() {
+    if (modificationHistory.length === 0) {
+        showNotification('⚠️ No modifications to undo', 'warning');
+        return;
+    }
+
+    if (!generatedWebsite || !generatedWebsite.activeVersion) {
+        showNotification('❌ No website to undo', 'error');
+        return;
+    }
+
+    // Get the previous version from history
+    const previousVersion = modificationHistory.pop();
+
+    // Restore the previous HTML
+    generatedWebsite.activeVersion.html = previousVersion.html;
+
+    // Find the active version index and update it
+    if (generatedWebsite.versions) {
+        const activeIndex = generatedWebsite.versions.findIndex(v =>
+            v.versionId === generatedWebsite.activeVersion.versionId
+        );
+        if (activeIndex !== -1) {
+            generatedWebsite.versions[activeIndex].html = previousVersion.html;
+        }
+    }
+
+    // Update the preview iframe
+    const activePreview = document.querySelector('.version-preview:not(.hidden)');
+    if (activePreview) {
+        const iframe = activePreview.querySelector('iframe');
+        if (iframe) {
+            iframe.srcdoc = previousVersion.html;
+        }
+    }
+
+    // Hide undo button if no more history
+    if (modificationHistory.length === 0) {
+        document.getElementById('undo-modification-btn').classList.add('hidden');
+    }
+
+    showNotification('↩️ Reverted to previous version', 'success');
+}
+
+// Toggle before preview visibility
+function toggleBeforePreview() {
+    const container = document.getElementById('current-preview-container');
+    const icon = document.getElementById('before-preview-icon');
+
+    if (container.classList.contains('hidden')) {
+        container.classList.remove('hidden');
+        icon.classList.add('rotate-180');
+    } else {
+        container.classList.add('hidden');
+        icon.classList.remove('rotate-180');
+    }
+}
 
 // Step 4: Generate Outreach
 async function generateOutreach() {

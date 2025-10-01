@@ -735,6 +735,7 @@ async function professionalScrapeWebsite(url) {
         let mainDescription = '';
         let allBusinessInfo = {};
         let allLinks = [];
+        let allImages = [];
 
         for (const page of scrapedPages) {
             const pageContent = page.markdown || page.content || '';
@@ -757,15 +758,21 @@ async function professionalScrapeWebsite(url) {
             const pageBusinessInfo = extractBusinessInfo(pageContent);
             Object.assign(allBusinessInfo, pageBusinessInfo);
 
-            // Extract links if available
+            // Extract links and images if available
             if (page.html) {
                 const pageLinks = extractLinks(page.html, page.url);
                 allLinks = allLinks.concat(pageLinks);
+
+                const pageImages = extractImages(page.html, page.url);
+                allImages = allImages.concat(pageImages);
             }
         }
 
-        // Remove duplicate links
+        // Remove duplicate links and images
         allLinks = [...new Set(allLinks)];
+        allImages = allImages.filter((img, index, arr) =>
+            arr.findIndex(i => i.url === img.url) === index
+        );
 
         const finalData = {
             title: mainTitle || 'Website Title',
@@ -773,6 +780,7 @@ async function professionalScrapeWebsite(url) {
             content: combinedContent.substring(0, 50000), // Display content
             fullContent: combinedContent, // Complete content for AI analysis
             links: allLinks,
+            images: allImages,
             businessInfo: allBusinessInfo,
             sitemap: allDiscoveredUrls.map(link => typeof link === 'string' ? link : link.url), // Full sitemap
             metadata: {
@@ -783,6 +791,7 @@ async function professionalScrapeWebsite(url) {
                 pagesScraped: scrapedPages.length,
                 priorityPagesFound: priorityPages.length,
                 wordCount: combinedContent.split(' ').length,
+                imageCount: allImages.length,
                 hasContactInfo: !!(allBusinessInfo.email || allBusinessInfo.phone),
                 scrapedUrls: scrapedPages.map(p => p.url),
                 sitemapComplete: true
@@ -824,6 +833,7 @@ async function scrapeSinglePage(url) {
         // Extract contact information and business details
         const businessInfo = extractBusinessInfo(content);
         const links = extractLinks(scrapeResult.html || '', url);
+        const images = extractImages(scrapeResult.html || '', url);
 
         return {
             title: title || 'Website Title',
@@ -831,12 +841,14 @@ async function scrapeSinglePage(url) {
             content: content.substring(0, 10000),
             fullContent: content, // Keep full content for AI analysis
             links: links,
+            images: images,
             businessInfo: businessInfo,
             metadata: {
                 scrapedAt: new Date().toISOString(),
                 url: url,
                 method: 'firecrawl-single',
                 wordCount: content.split(' ').length,
+                imageCount: images.length,
                 hasContactInfo: !!(businessInfo.email || businessInfo.phone),
                 ...scrapeResult.metadata
             }
@@ -880,6 +892,7 @@ async function enhancedScrapeWebsite(url) {
         // Extract business information
         const businessInfo = extractBusinessInfo(textContent);
         const links = extractLinks(html, url);
+        const images = extractImages(html, url);
 
         const title = titleMatch ? titleMatch[1].trim() : 'Website Title';
         const description = descMatch ? descMatch[1].trim() : extractDescriptionFromContent(textContent);
@@ -890,12 +903,14 @@ async function enhancedScrapeWebsite(url) {
             content: textContent.substring(0, 8000), // More content for better analysis
             fullContent: textContent, // Keep full content for AI analysis
             links: links,
+            images: images,
             businessInfo: businessInfo,
             metadata: {
                 scrapedAt: new Date().toISOString(),
                 url: url,
                 method: 'enhanced',
                 wordCount: textContent.split(' ').length,
+                imageCount: images.length,
                 hasContactInfo: !!(businessInfo.email || businessInfo.phone)
             }
         };
@@ -908,6 +923,7 @@ async function enhancedScrapeWebsite(url) {
             description: 'Website description not available',
             content: 'Could not extract content from this website. Please check the URL and try again.',
             links: [],
+            images: [],
             businessInfo: {},
             metadata: {
                 scrapedAt: new Date().toISOString(),
@@ -977,6 +993,47 @@ function extractLinks(html, baseUrl) {
             .slice(0, 15);
 
         return links;
+    } catch (error) {
+        return [];
+    }
+}
+
+function extractImages(html, baseUrl) {
+    try {
+        const imgMatches = html.match(/<img[^>]+>/gi) || [];
+        const images = imgMatches
+            .map(imgTag => {
+                // Extract src attribute
+                const srcMatch = imgTag.match(/src=[\"']([^\"']+)[\"']/i);
+                if (!srcMatch) return null;
+
+                let imgUrl = srcMatch[1];
+
+                // Convert relative URLs to absolute
+                if (imgUrl.startsWith('/')) {
+                    const domain = new URL(baseUrl).origin;
+                    imgUrl = domain + imgUrl;
+                } else if (!imgUrl.startsWith('http')) {
+                    // Handle relative paths like images/photo.jpg
+                    try {
+                        const urlObj = new URL(baseUrl);
+                        imgUrl = urlObj.origin + (urlObj.pathname.endsWith('/') ? urlObj.pathname : urlObj.pathname + '/') + imgUrl;
+                    } catch (e) {
+                        return null;
+                    }
+                }
+
+                // Extract alt text
+                const altMatch = imgTag.match(/alt=[\"']([^\"']+)[\"']/i);
+                const alt = altMatch ? altMatch[1] : '';
+
+                return { url: imgUrl, alt: alt };
+            })
+            .filter(img => img && img.url.startsWith('http'))
+            .filter((img, index, arr) => arr.findIndex(i => i.url === img.url) === index) // Remove duplicates
+            .slice(0, 100); // Get up to 100 images
+
+        return images;
     } catch (error) {
         return [];
     }
@@ -1078,12 +1135,25 @@ async function generateWebsiteWithAI(scrapedData, businessInfo, instructions) {
         const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
         const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
+        // Get full content (up to 500k characters) and images
+        const websiteContent = scrapedData?.fullContent?.substring(0, 500000) || scrapedData?.content?.substring(0, 500000) || 'No content';
+        const images = scrapedData?.images || [];
+
+        // Format image URLs for the prompt
+        let imageSection = '';
+        if (images.length > 0) {
+            imageSection = `\n\nAVAILABLE IMAGES FROM ORIGINAL WEBSITE (${images.length} total, showing ${Math.min(images.length, 50)}):\n`;
+            images.slice(0, 50).forEach((img, index) => {
+                imageSection += `${index + 1}. ${img.url}${img.alt ? ` (alt: "${img.alt}")` : ''}\n`;
+            });
+        }
+
         const prompt = `Create a complete, modern HTML website for this business:
 
 Business: ${businessInfo.name}
 Industry: ${businessInfo.industry}
 Services: ${businessInfo.services}
-Current Website Content: ${scrapedData?.content?.substring(0, 50000) || 'No content'}
+Current Website Content (${websiteContent.length} characters): ${websiteContent}${imageSection}
 
 Instructions: ${instructions}
 
@@ -1096,6 +1166,14 @@ Create a complete HTML page with:
 - Contact section with form
 - Professional color scheme
 - Mobile-friendly design
+
+IMPORTANT INSTRUCTIONS FOR IMAGES:
+- Use the actual image URLs from the "AVAILABLE IMAGES" list above whenever possible
+- Extract and use image URLs that appear in the website content
+- If original images are not available or suitable, use placeholder images from https://images.unsplash.com/
+- Include proper alt text for all images for accessibility
+- Ensure all image URLs are absolute (not relative paths)
+- Use responsive image techniques (e.g., object-fit: cover)
 
 Return ONLY the complete HTML code, no explanations.`;
 

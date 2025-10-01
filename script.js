@@ -1,5 +1,18 @@
 // App Sumo Website Scraper & Builder - Frontend JavaScript
 
+// Navigation between homepage and tool
+function showTool() {
+    document.getElementById('homepage-section').classList.add('hidden');
+    document.getElementById('tool-section').classList.remove('hidden');
+    window.scrollTo(0, 0);
+}
+
+function showHomepage() {
+    document.getElementById('tool-section').classList.add('hidden');
+    document.getElementById('homepage-section').classList.remove('hidden');
+    window.scrollTo(0, 0);
+}
+
 // Global state
 let scrapedData = null;
 let businessInfo = {};
@@ -7,6 +20,10 @@ let generatedWebsite = null;
 let hostedSite = null;
 let modificationHistory = []; // Stack of previous versions for undo
 let redoHistory = []; // Stack for redo functionality
+
+// Token settings
+let maxWebsiteTokens = 8000;
+let maxOutreachTokens = 3000;
 
 // Input validation utilities
 const validators = {
@@ -207,6 +224,39 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('redo-modification-btn').addEventListener('click', redoModification);
     document.getElementById('toggle-before-preview').addEventListener('click', toggleBeforePreview);
 
+    // API Settings event listeners
+    document.getElementById('save-api-settings-btn').addEventListener('click', saveAPISettings);
+    document.getElementById('test-api-connection-btn').addEventListener('click', testAPIConnection);
+
+    // LLM Provider radio buttons
+    const providerRadios = document.querySelectorAll('input[name="llm-provider"]');
+    providerRadios.forEach(radio => {
+        radio.addEventListener('change', handleProviderChange);
+    });
+
+    // Token slider event listeners
+    const websiteTokensSlider = document.getElementById('website-tokens-slider');
+    const websiteTokensValue = document.getElementById('website-tokens-value');
+    const outreachTokensSlider = document.getElementById('outreach-tokens-slider');
+    const outreachTokensValue = document.getElementById('outreach-tokens-value');
+
+    if (websiteTokensSlider) {
+        websiteTokensSlider.addEventListener('input', (e) => {
+            maxWebsiteTokens = parseInt(e.target.value);
+            websiteTokensValue.textContent = maxWebsiteTokens;
+        });
+    }
+
+    if (outreachTokensSlider) {
+        outreachTokensSlider.addEventListener('input', (e) => {
+            maxOutreachTokens = parseInt(e.target.value);
+            outreachTokensValue.textContent = maxOutreachTokens;
+        });
+    }
+
+    // Load API settings on page load
+    loadAPISettings();
+
     // Business Intelligence - Scraped Content Toggle
     const businessToggleBtn = document.getElementById('business-scraped-content-toggle');
     const businessCopyBtn = document.getElementById('business-copy-content');
@@ -257,6 +307,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load projects on page load
     loadProjects();
+
+    // Homepage navigation buttons
+    const launchBtn1 = document.getElementById('launch-tool-btn');
+    const launchBtn2 = document.getElementById('launch-tool-btn-2');
+    const backHomeBtn = document.getElementById('back-to-home-btn');
+
+    if (launchBtn1) {
+        launchBtn1.addEventListener('click', showTool);
+    }
+    if (launchBtn2) {
+        launchBtn2.addEventListener('click', showTool);
+    }
+    if (backHomeBtn) {
+        backHomeBtn.addEventListener('click', showHomepage);
+    }
 });
 
 // API Base URL
@@ -1532,4 +1597,162 @@ function copyRawData() {
         console.error('Failed to copy: ', err);
         showNotification('Failed to copy raw data', 'error');
     });
+}
+// ============================================
+// API Settings Functions
+// ============================================
+
+// Load API settings from server
+async function loadAPISettings() {
+    try {
+        const response = await fetch(`${API_BASE}/api/config/get`);
+        const data = await response.json();
+
+        if (data.success && data.config) {
+            // Set the selected provider
+            const providerRadio = document.querySelector(`input[name="llm-provider"][value="${data.config.llmProvider}"]`);
+            if (providerRadio) {
+                providerRadio.checked = true;
+                handleProviderChange({ target: providerRadio });
+            }
+        }
+    } catch (error) {
+        console.error('Failed to load API settings:', error);
+    }
+}
+
+// Handle provider change
+function handleProviderChange(event) {
+    const provider = event.target.value;
+
+    // Hide all API key sections
+    document.getElementById('default-api-section').classList.add('hidden');
+    document.getElementById('gemini-api-section').classList.add('hidden');
+    document.getElementById('openai-api-section').classList.add('hidden');
+    document.getElementById('claude-api-section').classList.add('hidden');
+
+    // Show the selected provider's section
+    if (provider === 'default') {
+        document.getElementById('default-api-section').classList.remove('hidden');
+    } else if (provider === 'gemini') {
+        document.getElementById('gemini-api-section').classList.remove('hidden');
+    } else if (provider === 'openai') {
+        document.getElementById('openai-api-section').classList.remove('hidden');
+    } else if (provider === 'claude') {
+        document.getElementById('claude-api-section').classList.remove('hidden');
+    }
+}
+
+// Save API settings
+async function saveAPISettings() {
+    const saveBtn = document.getElementById('save-api-settings-btn');
+    const statusDiv = document.getElementById('api-settings-status');
+
+    try {
+        // Get selected provider
+        const provider = document.querySelector('input[name="llm-provider"]:checked').value;
+
+        // Get API keys
+        const geminiKey = document.getElementById('gemini-api-key').value.trim();
+        const openaiKey = document.getElementById('openai-api-key').value.trim();
+        const claudeKey = document.getElementById('claude-api-key').value.trim();
+        const firecrawlKey = document.getElementById('firecrawl-api-key').value.trim();
+
+        // Get selected models
+        const geminiModel = document.getElementById('gemini-model').value;
+        const openaiModel = document.getElementById('openai-model').value;
+        const claudeModel = document.getElementById('claude-model').value;
+
+        // Validate: selected provider must have a key (unless it's gemini with default)
+        if (provider === 'openai' && !openaiKey) {
+            showNotification('⚠️ OpenAI API key is required', 'warning');
+            return;
+        }
+        if (provider === 'claude' && !claudeKey) {
+            showNotification('⚠️ Claude API key is required', 'warning');
+            return;
+        }
+
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+
+        const response = await fetch(`${API_BASE}/api/config/save`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                llmProvider: provider,
+                geminiApiKey: geminiKey || undefined,
+                openaiApiKey: openaiKey || undefined,
+                claudeApiKey: claudeKey || undefined,
+                firecrawlApiKey: firecrawlKey || undefined,
+                geminiModel: geminiModel,
+                openaiModel: openaiModel,
+                claudeModel: claudeModel,
+                maxWebsiteTokens: maxWebsiteTokens,
+                maxOutreachTokens: maxOutreachTokens
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showNotification('✅ API settings saved successfully!', 'success');
+            statusDiv.className = 'mt-4 p-4 rounded-lg bg-green-50 border border-green-200';
+            statusDiv.textContent = `Settings saved! Using ${provider.toUpperCase()} for AI generation.`;
+            statusDiv.classList.remove('hidden');
+
+            // Clear password fields for security
+            document.getElementById('gemini-api-key').value = '';
+            document.getElementById('openai-api-key').value = '';
+            document.getElementById('claude-api-key').value = '';
+            document.getElementById('firecrawl-api-key').value = '';
+        } else {
+            throw new Error(data.error || 'Failed to save settings');
+        }
+    } catch (error) {
+        showNotification(`❌ Error: ${error.message}`, 'error');
+        statusDiv.className = 'mt-4 p-4 rounded-lg bg-red-50 border border-red-200';
+        statusDiv.textContent = `Error: ${error.message}`;
+        statusDiv.classList.remove('hidden');
+    } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = '<i class="fas fa-save mr-2"></i>Save API Settings';
+    }
+}
+
+// Test API connection
+async function testAPIConnection() {
+    const testBtn = document.getElementById('test-api-connection-btn');
+    const statusDiv = document.getElementById('api-settings-status');
+
+    try {
+        testBtn.disabled = true;
+        testBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Testing...';
+
+        statusDiv.className = 'mt-4 p-4 rounded-lg bg-blue-50 border border-blue-200';
+        statusDiv.textContent = 'Testing API connection...';
+        statusDiv.classList.remove('hidden');
+
+        const response = await fetch(`${API_BASE}/api/config/test`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showNotification('✅ API connection successful!', 'success');
+            statusDiv.className = 'mt-4 p-4 rounded-lg bg-green-50 border border-green-200';
+            statusDiv.textContent = `✅ ${data.message}`;
+        } else {
+            throw new Error(data.message || 'Connection test failed');
+        }
+    } catch (error) {
+        showNotification(`❌ Test failed: ${error.message}`, 'error');
+        statusDiv.className = 'mt-4 p-4 rounded-lg bg-red-50 border border-red-200';
+        statusDiv.textContent = `❌ ${error.message}`;
+    } finally {
+        testBtn.disabled = false;
+        testBtn.innerHTML = '<i class="fas fa-check-circle mr-2"></i>Test Connection';
+    }
 }

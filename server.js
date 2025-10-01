@@ -66,8 +66,25 @@ const handleError = (res, error, context = '') => {
 
 // Import Firecrawl for professional website scraping
 const FirecrawlApp = require('@mendable/firecrawl-js').default;
+const { GoogleGenerativeAI } = require('@google/generative-ai');
+const OpenAI = require('openai');
+const Anthropic = require('@anthropic-ai/sdk');
 
 const app = express();
+
+// API Configuration Storage (in-memory for now, can be persisted to DB/file later)
+let apiConfig = {
+    llmProvider: 'default', // default uses built-in Gemini API
+    geminiApiKey: process.env.GOOGLE_API_KEY || null,
+    openaiApiKey: process.env.OPENAI_API_KEY || null,
+    claudeApiKey: process.env.ANTHROPIC_API_KEY || null,
+    firecrawlApiKey: process.env.FIRECRAWL_API_KEY || null,
+    geminiModel: 'gemini-2.5-flash',
+    openaiModel: 'gpt-5',
+    claudeModel: 'claude-sonnet-4-5-20250929',
+    maxWebsiteTokens: 8000,
+    maxOutreachTokens: 3000
+};
 
 // Middleware
 app.use(cors());
@@ -80,9 +97,73 @@ const scrapedWebsites = new Map();
 const generatedProjects = new Map();
 
 // Initialize Firecrawl client
-const firecrawl = process.env.FIRECRAWL_API_KEY && process.env.FIRECRAWL_API_KEY !== 'fc-your_firecrawl_key_here'
-    ? new FirecrawlApp({ apiKey: process.env.FIRECRAWL_API_KEY })
+let firecrawl = apiConfig.firecrawlApiKey && apiConfig.firecrawlApiKey !== 'fc-your_firecrawl_key_here'
+    ? new FirecrawlApp({ apiKey: apiConfig.firecrawlApiKey })
     : null;
+
+// Helper function to get Firecrawl instance with current API key
+const getFirecrawl = () => {
+    const key = apiConfig.firecrawlApiKey;
+    if (key && key !== 'fc-your_firecrawl_key_here' && !firecrawl) {
+        firecrawl = new FirecrawlApp({ apiKey: key });
+    }
+    return firecrawl;
+};
+
+// Universal LLM function that works with any provider
+async function callLLM(prompt, options = {}) {
+    const provider = apiConfig.llmProvider;
+    const maxTokens = options.maxTokens || 8000;
+
+    try {
+        if (provider === 'default' || provider === 'gemini') {
+            // Use default built-in Gemini API or user's custom Gemini API
+            const apiKey = provider === 'default'
+                ? process.env.GOOGLE_API_KEY
+                : (apiConfig.geminiApiKey || process.env.GOOGLE_API_KEY);
+
+            if (!apiKey) {
+                throw new Error('Gemini API key not configured');
+            }
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({
+                model: options.model || apiConfig.geminiModel,
+                generationConfig: {
+                    maxOutputTokens: maxTokens,
+                }
+            });
+            const result = await model.generateContent(prompt);
+            return result.response.text();
+        } else if (provider === 'openai') {
+            if (!apiConfig.openaiApiKey) {
+                throw new Error('OpenAI API key not configured');
+            }
+            const openai = new OpenAI({ apiKey: apiConfig.openaiApiKey });
+            const completion = await openai.chat.completions.create({
+                model: options.model || 'gpt-4o',
+                messages: [{ role: 'user', content: prompt }],
+                max_tokens: maxTokens
+            });
+            return completion.choices[0].message.content;
+        } else if (provider === 'claude') {
+            if (!apiConfig.claudeApiKey) {
+                throw new Error('Claude API key not configured');
+            }
+            const anthropic = new Anthropic({ apiKey: apiConfig.claudeApiKey });
+            const message = await anthropic.messages.create({
+                model: options.model || 'claude-sonnet-4-5-20250929',
+                max_tokens: maxTokens,
+                messages: [{ role: 'user', content: prompt }]
+            });
+            return message.content[0].text;
+        } else {
+            throw new Error(`Unknown LLM provider: ${provider}`);
+        }
+    } catch (error) {
+        console.error(`LLM Error (${provider}):`, error.message);
+        throw error;
+    }
+}
 
 // Scrape website endpoint
 app.post('/api/scrape', async (req, res) => {
@@ -1107,10 +1188,6 @@ function extractImages(html, baseUrl) {
 // AI Business Analysis
 async function analyzeBusinessWithAI(businessInfo) {
     try {
-        const { GoogleGenerativeAI } = require('@google/generative-ai');
-        const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-
         // Get the complete scraped website data (use fullContent if available)
         const fullContent = businessInfo.scrapedData?.fullContent || businessInfo.scrapedData?.content || 'No content available';
         const websiteUrl = businessInfo.scrapedData?.url || 'Unknown URL';
@@ -1152,9 +1229,7 @@ EXTRACTION RULES:
 
 RETURN ONLY VALID JSON:`;
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        let text = response.text();
+        let text = await callLLM(prompt, { maxTokens: 4000 });
 
         console.log('🤖 Raw AI Response:', text.substring(0, 500));
 
@@ -1196,10 +1271,6 @@ RETURN ONLY VALID JSON:`;
 // AI Website Generation
 async function generateWebsiteWithAI(scrapedData, businessInfo, instructions) {
     try {
-        const { GoogleGenerativeAI } = require('@google/generative-ai');
-        const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-
         // Get full content (up to 500k characters) and images
         const websiteContent = scrapedData?.fullContent?.substring(0, 500000) || scrapedData?.content?.substring(0, 500000) || 'No content';
         const images = scrapedData?.images || [];
@@ -1242,9 +1313,7 @@ IMPORTANT INSTRUCTIONS FOR IMAGES:
 
 Return ONLY the complete HTML code, no explanations.`;
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const html = response.text();
+        const html = await callLLM(prompt, { maxTokens: apiConfig.maxWebsiteTokens });
 
         // Clean up the HTML (remove markdown formatting if present)
         const cleanHtml = html
@@ -1276,10 +1345,6 @@ Return ONLY the complete HTML code, no explanations.`;
 // AI Website Modification - Iterative changes
 async function modifyWebsiteWithAI(currentHTML, modificationRequest, businessInfo, scrapedData) {
     try {
-        const { GoogleGenerativeAI } = require('@google/generative-ai');
-        const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-
         // Get available images if scrapedData is provided
         const images = scrapedData?.images || [];
         let imageSection = '';
@@ -1309,9 +1374,7 @@ IMPORTANT INSTRUCTIONS:
 
 Return ONLY the complete HTML code, no explanations.`;
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const html = response.text();
+        const html = await callLLM(prompt, { maxTokens: apiConfig.maxWebsiteTokens });
 
         // Clean up the HTML (remove markdown formatting if present)
         const cleanHtml = html
@@ -1333,10 +1396,6 @@ Return ONLY the complete HTML code, no explanations.`;
 // AI Outreach Generation
 async function generateOutreachWithAI(businessInfo, generatedWebsite, outreachInfo) {
     try {
-        const { GoogleGenerativeAI } = require('@google/generative-ai');
-        const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
-
         const emailPrompt = `Create a professional cold email for web design services:
 
 Target Business: ${businessInfo.name}
@@ -1380,13 +1439,10 @@ Create a professional proposal including:
 Make it compelling and professional.`;
 
         // Generate both in parallel
-        const [emailResult, proposalResult] = await Promise.all([
-            model.generateContent(emailPrompt),
-            model.generateContent(proposalPrompt)
+        const [email, proposal] = await Promise.all([
+            callLLM(emailPrompt, { maxTokens: apiConfig.maxOutreachTokens / 3 }),
+            callLLM(proposalPrompt, { maxTokens: apiConfig.maxOutreachTokens })
         ]);
-
-        const email = (await emailResult.response).text();
-        const proposal = (await proposalResult.response).text();
 
         return {
             email: email.trim(),
@@ -1836,6 +1892,130 @@ app.get('/api/health', (req, res) => {
 });
 
 // Serve the main app
+// API Configuration endpoints
+app.post('/api/config/save', async (req, res) => {
+    try {
+        const { llmProvider, geminiApiKey, openaiApiKey, claudeApiKey, firecrawlApiKey, geminiModel, openaiModel, claudeModel, maxWebsiteTokens, maxOutreachTokens } = req.body;
+
+        // Validate provider
+        if (llmProvider && !['default', 'gemini', 'openai', 'claude'].includes(llmProvider)) {
+            return res.status(400).json({ error: 'Invalid LLM provider' });
+        }
+
+        // Update configuration
+        if (llmProvider) apiConfig.llmProvider = llmProvider;
+        if (geminiApiKey !== undefined) apiConfig.geminiApiKey = geminiApiKey || null;
+        if (openaiApiKey !== undefined) apiConfig.openaiApiKey = openaiApiKey || null;
+        if (claudeApiKey !== undefined) apiConfig.claudeApiKey = claudeApiKey || null;
+        if (geminiModel) apiConfig.geminiModel = geminiModel;
+        if (openaiModel) apiConfig.openaiModel = openaiModel;
+        if (claudeModel) apiConfig.claudeModel = claudeModel;
+        if (maxWebsiteTokens) apiConfig.maxWebsiteTokens = parseInt(maxWebsiteTokens);
+        if (maxOutreachTokens) apiConfig.maxOutreachTokens = parseInt(maxOutreachTokens);
+        if (firecrawlApiKey !== undefined) {
+            apiConfig.firecrawlApiKey = firecrawlApiKey || null;
+            // Reinitialize Firecrawl with new key
+            if (firecrawlApiKey && firecrawlApiKey !== 'fc-your_firecrawl_key_here') {
+                firecrawl = new FirecrawlApp({ apiKey: firecrawlApiKey });
+            } else {
+                firecrawl = null;
+            }
+        }
+
+        console.log('✅ API Configuration updated:', {
+            llmProvider: apiConfig.llmProvider,
+            gemini: apiConfig.geminiApiKey ? '✅ Set' : '❌ Not set',
+            openai: apiConfig.openaiApiKey ? '✅ Set' : '❌ Not set',
+            claude: apiConfig.claudeApiKey ? '✅ Set' : '❌ Not set',
+            firecrawl: apiConfig.firecrawlApiKey ? '✅ Set' : '❌ Not set',
+            maxWebsiteTokens: apiConfig.maxWebsiteTokens,
+            maxOutreachTokens: apiConfig.maxOutreachTokens
+        });
+
+        res.json({
+            success: true,
+            message: 'API configuration saved successfully',
+            config: {
+                llmProvider: apiConfig.llmProvider,
+                hasGeminiKey: !!apiConfig.geminiApiKey,
+                hasOpenAIKey: !!apiConfig.openaiApiKey,
+                hasClaudeKey: !!apiConfig.claudeApiKey,
+                hasFirecrawlKey: !!apiConfig.firecrawlApiKey,
+                maxWebsiteTokens: apiConfig.maxWebsiteTokens,
+                maxOutreachTokens: apiConfig.maxOutreachTokens
+            }
+        });
+    } catch (error) {
+        handleError(res, error, '(API Config Save)');
+    }
+});
+
+app.get('/api/config/get', (req, res) => {
+    res.json({
+        success: true,
+        config: {
+            llmProvider: apiConfig.llmProvider,
+            hasGeminiKey: !!apiConfig.geminiApiKey,
+            hasOpenAIKey: !!apiConfig.openaiApiKey,
+            hasClaudeKey: !!apiConfig.claudeApiKey,
+            hasFirecrawlKey: !!apiConfig.firecrawlApiKey,
+            maxWebsiteTokens: apiConfig.maxWebsiteTokens,
+            maxOutreachTokens: apiConfig.maxOutreachTokens
+        }
+    });
+});
+
+app.post('/api/config/test', async (req, res) => {
+    try {
+        const provider = apiConfig.llmProvider;
+        let testResult = { success: false, message: '' };
+
+        // Test the current LLM provider
+        if (provider === 'gemini') {
+            if (!apiConfig.geminiApiKey) {
+                return res.status(400).json({ error: 'Gemini API key not configured' });
+            }
+            const genAI = new GoogleGenerativeAI(apiConfig.geminiApiKey);
+            const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+            const result = await model.generateContent('Say "Hello" in one word');
+            const text = result.response.text();
+            testResult = { success: true, message: `Gemini API working! Response: ${text}` };
+        } else if (provider === 'openai') {
+            if (!apiConfig.openaiApiKey) {
+                return res.status(400).json({ error: 'OpenAI API key not configured' });
+            }
+            const openai = new OpenAI({ apiKey: apiConfig.openaiApiKey });
+            const completion = await openai.chat.completions.create({
+                model: 'gpt-4o',
+                messages: [{ role: 'user', content: 'Say "Hello" in one word' }],
+                max_tokens: 10
+            });
+            const text = completion.choices[0].message.content;
+            testResult = { success: true, message: `OpenAI API working! Response: ${text}` };
+        } else if (provider === 'claude') {
+            if (!apiConfig.claudeApiKey) {
+                return res.status(400).json({ error: 'Claude API key not configured' });
+            }
+            const anthropic = new Anthropic({ apiKey: apiConfig.claudeApiKey });
+            const message = await anthropic.messages.create({
+                model: 'claude-sonnet-4-5-20250929',
+                max_tokens: 10,
+                messages: [{ role: 'user', content: 'Say "Hello" in one word' }]
+            });
+            const text = message.content[0].text;
+            testResult = { success: true, message: `Claude API working! Response: ${text}` };
+        }
+
+        res.json(testResult);
+    } catch (error) {
+        console.error('API test error:', error);
+        res.status(500).json({
+            success: false,
+            message: `API test failed: ${error.message}`
+        });
+    }
+});
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });

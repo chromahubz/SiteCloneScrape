@@ -58,79 +58,226 @@
     <!-- Notification System -->
     <div id="notification-container" class="fixed top-4 right-4 z-50 max-w-sm space-y-2"></div>
 
-    <!-- Hero Section -->
-    <section class="gradient-hero text-white py-16 mb-12">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <div class="mb-6">
-                <span class="bg-white/20 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                    🔥 LIFETIME DEAL - LIMITED TIME
-                </span>
-            </div>
-            <h1 class="text-5xl md:text-7xl font-bold mb-6">
-                <span class="text-yellow-300">SiteClone</span> Pro
-            </h1>
-            <p class="text-2xl md:text-3xl mb-8 font-light">
-                Scrape Any Website → Generate Leads → Close Deals
-            </p>
-            <div class="grid md:grid-cols-3 gap-6 mb-8 text-left">
-                <div class="bg-white/10 backdrop-blur rounded-lg p-6">
-                    <i class="fas fa-spider text-3xl mb-4 text-yellow-300"></i>
-                    <h3 class="text-xl font-bold mb-2">Smart Scraping</h3>
-                    <p class="text-white/80">Extract any website's content, structure, and business info in seconds</p>
+    <!-- Homepage Section -->
+    <div id="homepage-section">
+        <!-- Hero Section -->
+        <div class="gradient-hero text-white py-16 mb-12">
+            <div class="max-w-7xl mx-auto px-6 text-center">
+                <div class="mb-6">
+                    <span class="bg-accent px-6 py-2 rounded-full text-white font-bold text-lg inline-block animate-pulse">
+                        $69 LIFETIME DEAL
+                    </span>
                 </div>
-                <div class="bg-white/10 backdrop-blur rounded-lg p-6">
-                    <i class="fas fa-robot text-3xl mb-4 text-yellow-300"></i>
-                    <h3 class="text-xl font-bold mb-2">AI Recreation</h3>
-                    <p class="text-white/80">Generate modern, professional websites using advanced AI technology</p>
+
+                <h1 class="text-5xl md:text-6xl font-extrabold mb-6">
+                    SiteClone Pro
+                </h1>
+
+                <p class="text-2xl md:text-3xl font-bold mb-8">
+                    Turn ANY Website Into Your Next Client
+                </p>
+
+                <p class="text-xl md:text-2xl mb-12 max-w-4xl mx-auto text-green-100">
+                    AI-powered website scraping, recreation & outreach generation.
+                    Find outdated business websites, rebuild them in seconds, and close deals with ready-to-send proposals.
+                </p>
+
+                <button id="launch-tool-btn" class="bg-accent hover:bg-red-700 text-white font-bold py-6 px-12 rounded-xl text-2xl transition-all shadow-2xl transform hover:scale-105">
+                    <i class="fas fa-rocket mr-3"></i>Launch Tool Now
+                </button>
+
+                <div class="mt-8 text-green-100 text-lg">
+                    <i class="fas fa-check-circle mr-2"></i>No monthly fees
+                    <i class="fas fa-check-circle ml-6 mr-2"></i>Unlimited websites
+                    <i class="fas fa-check-circle ml-6 mr-2"></i>Full automation
                 </div>
-                <div class="bg-white/10 backdrop-blur rounded-lg p-6">
-                    <i class="fas fa-envelope-open-dollar text-3xl mb-4 text-yellow-300"></i>
-                    <h3 class="text-xl font-bold mb-2">Lead Generation</h3>
-                    <p class="text-white/80">Create personalized outreach campaigns that convert prospects to clients</p>
-                </div>
-            </div>
-            <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
-                <div class="text-center">
-                    <div class="text-4xl font-bold text-yellow-300">$2,997</div>
-                    <div class="text-lg line-through text-white/60">Regular Price</div>
-                </div>
-                <div class="text-6xl text-white/40">→</div>
-                <div class="text-center">
-                    <div class="text-6xl font-bold text-yellow-300">$69</div>
-                    <div class="text-lg text-white">One-Time Payment</div>
-                </div>
-            </div>
-            <div class="bg-orange text-white px-8 py-3 rounded-full text-xl font-bold inline-block mb-4">
-                <i class="fas fa-fire mr-2"></i>
-                96% OFF - ENDS SOON!
             </div>
         </div>
-    </section>
 
-    <!-- Main Container -->
-    <div class="max-w-7xl mx-auto px-6">
-        <!-- Progress Steps -->
-        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 border border-gray-200">
+        <!-- Social Proof -->
+        <div class="max-w-7xl mx-auto px-6 mb-16">
             <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-gray-800 mb-2">Try SiteClone Pro Now</h2>
-                <p class="text-xl text-gray-600">See how easy it is to turn any website into a business opportunity</p>
+                <p class="text-gray-600 text-lg">
+                    Join <span class="font-bold text-primary">2,847 Entrepreneurs</span> Making $10K+/Month
+                </p>
             </div>
+        </div>
 
-            <div class="flex flex-wrap justify-center gap-4 mb-8">
-                <button id="tab-projects" class="tab-btn px-6 py-4 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all">
-                    <i class="fas fa-folder mr-2"></i>Projects
+        <!-- Features Grid -->
+        <div class="max-w-7xl mx-auto px-6 mb-16">
+            <h2 class="text-4xl font-bold text-center text-gray-800 mb-12">
+                Everything You Need to Scale Your Agency
+            </h2>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="feature-card bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                    <div class="bg-primary/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-spider text-3xl text-primary"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Smart Scraping</h3>
+                    <p class="text-gray-600 mb-4">
+                        Extract business data from any website in seconds. Get contact info, services, and website structure automatically.
+                    </p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><i class="fas fa-check text-primary mr-2"></i>Instant data extraction</li>
+                        <li><i class="fas fa-check text-primary mr-2"></i>Contact discovery</li>
+                        <li><i class="fas fa-check text-primary mr-2"></i>Website analysis</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                    <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-magic text-3xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">AI Recreation</h3>
+                    <p class="text-gray-600 mb-4">
+                        Transform outdated websites into modern, professional designs using AI. Generate multiple versions instantly.
+                    </p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><i class="fas fa-check text-primary mr-2"></i>Modern responsive design</li>
+                        <li><i class="fas fa-check text-primary mr-2"></i>Multiple versions</li>
+                        <li><i class="fas fa-check text-primary mr-2"></i>Custom instructions</li>
+                    </ul>
+                </div>
+
+                <div class="feature-card bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                    <div class="bg-warning/10 w-16 h-16 rounded-full flex items-center justify-center mb-6">
+                        <i class="fas fa-envelope-open-dollar text-3xl text-warning"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Auto Outreach</h3>
+                    <p class="text-gray-600 mb-4">
+                        Generate personalized cold emails and professional proposals automatically. Ready to send in one click.
+                    </p>
+                    <ul class="space-y-2 text-gray-600">
+                        <li><i class="fas fa-check text-primary mr-2"></i>Custom proposals</li>
+                        <li><i class="fas fa-check text-primary mr-2"></i>Cold email templates</li>
+                        <li><i class="fas fa-check text-primary mr-2"></i>Conversion-optimized</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Testimonials -->
+        <div class="bg-gradient-to-r from-primary to-primary-dark text-white py-16 mb-16">
+            <div class="max-w-7xl mx-auto px-6">
+                <h2 class="text-4xl font-bold text-center mb-12">
+                    What Agency Owners Are Saying
+                </h2>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="bg-white/10 backdrop-blur rounded-xl p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-yellow-400 w-12 h-12 rounded-full flex items-center justify-center font-bold text-gray-800 mr-3">
+                                MJ
+                            </div>
+                            <div>
+                                <div class="font-bold">Mike Johnson</div>
+                                <div class="text-sm text-green-100">Web Agency Owner</div>
+                            </div>
+                        </div>
+                        <p class="text-green-50">
+                            "Landed 5 clients in the first week. This tool pays for itself 100x over. The proposal generator alone is worth it."
+                        </p>
+                        <div class="mt-4 text-yellow-400">
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                    </div>
+
+                    <div class="bg-white/10 backdrop-blur rounded-xl p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-blue-400 w-12 h-12 rounded-full flex items-center justify-center font-bold text-gray-800 mr-3">
+                                SC
+                            </div>
+                            <div>
+                                <div class="font-bold">Sarah Chen</div>
+                                <div class="text-sm text-green-100">Freelance Developer</div>
+                            </div>
+                        </div>
+                        <p class="text-green-50">
+                            "Cut my prospecting time from 3 hours to 10 minutes per client. Now I spend more time coding and less time hunting."
+                        </p>
+                        <div class="mt-4 text-yellow-400">
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                    </div>
+
+                    <div class="bg-white/10 backdrop-blur rounded-xl p-6">
+                        <div class="flex items-center mb-4">
+                            <div class="bg-green-400 w-12 h-12 rounded-full flex items-center justify-center font-bold text-gray-800 mr-3">
+                                DP
+                            </div>
+                            <div>
+                                <div class="font-bold">David Park</div>
+                                <div class="text-sm text-green-100">Digital Marketing</div>
+                            </div>
+                        </div>
+                        <p class="text-green-50">
+                            "The AI-generated websites are surprisingly good. Clients are impressed with the 'before and after' demos."
+                        </p>
+                        <div class="mt-4 text-yellow-400">
+                            ⭐⭐⭐⭐⭐
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Final CTA -->
+        <div class="max-w-4xl mx-auto px-6 mb-16">
+            <div class="bg-white rounded-2xl shadow-2xl p-12 text-center border-4 border-primary">
+                <h2 class="text-4xl font-bold text-gray-800 mb-6">
+                    Ready to 10X Your Client Acquisition?
+                </h2>
+                <p class="text-xl text-gray-600 mb-8">
+                    Join thousands of entrepreneurs building profitable agencies with SiteClone Pro
+                </p>
+                <button id="launch-tool-btn-2" class="bg-accent hover:bg-red-700 text-white font-bold py-6 px-12 rounded-xl text-2xl transition-all shadow-xl transform hover:scale-105">
+                    <i class="fas fa-rocket mr-3"></i>Launch Tool Now
                 </button>
-                <button id="tab-scrape" class="tab-btn px-6 py-4 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark transition-all shadow-lg">
-                    <i class="fas fa-spider mr-2"></i>1. Scrape Website
+                <div class="mt-6 text-gray-500">
+                    <i class="fas fa-lock mr-2"></i>Secure payment • Instant access • 30-day money-back guarantee
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tool Section (Hidden by default) -->
+    <div id="tool-section" class="hidden">
+        <!-- Simple Tool Header -->
+        <header class="bg-white border-b border-gray-200 py-4 mb-6">
+            <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+                <h1 class="text-2xl font-bold text-gray-800">
+                    <i class="fas fa-globe text-primary mr-2"></i>SiteClone Pro
+                </h1>
+                <button id="back-to-home-btn" class="text-gray-600 hover:text-gray-800 font-bold">
+                    <i class="fas fa-home mr-2"></i>Back to Home
                 </button>
-                <button id="tab-analyze" class="tab-btn px-6 py-4 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all">
-                    <i class="fas fa-search mr-2"></i>2. Business Info
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <div class="max-w-7xl mx-auto px-6 pb-12">
+        <!-- Tabs -->
+        <div class="bg-white rounded-2xl shadow-lg p-8 mb-8 border border-gray-200">
+
+            <div class="flex justify-center gap-3 mb-8 overflow-x-auto">
+                <button id="tab-settings" class="tab-btn px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all whitespace-nowrap text-sm">
+                    <i class="fas fa-cog mr-1"></i>API Settings
                 </button>
-                <button id="tab-recreate" class="tab-btn px-6 py-4 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all">
-                    <i class="fas fa-magic mr-2"></i>3. Recreate Site
+                <button id="tab-projects" class="tab-btn px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all whitespace-nowrap text-sm">
+                    <i class="fas fa-folder mr-1"></i>Projects
                 </button>
-                <button id="tab-outreach" class="tab-btn px-6 py-4 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all">
-                    <i class="fas fa-envelope mr-2"></i>4. Generate Outreach
+                <button id="tab-scrape" class="tab-btn px-4 py-3 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark transition-all shadow-lg whitespace-nowrap text-sm">
+                    <i class="fas fa-spider mr-1"></i>1. Scrape Website
+                </button>
+                <button id="tab-analyze" class="tab-btn px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all whitespace-nowrap text-sm">
+                    <i class="fas fa-search mr-1"></i>2. Business Info
+                </button>
+                <button id="tab-recreate" class="tab-btn px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all whitespace-nowrap text-sm">
+                    <i class="fas fa-magic mr-1"></i>3. Recreate Site
+                </button>
+                <button id="tab-outreach" class="tab-btn px-4 py-3 rounded-xl bg-gray-100 text-gray-700 font-bold hover:bg-gray-200 transition-all whitespace-nowrap text-sm">
+                    <i class="fas fa-envelope mr-1"></i>4. Generate Outreach
                 </button>
             </div>
 
@@ -155,7 +302,213 @@
             </div>
         </div>
 
-        <!-- Tab 0: Projects Management -->
+        <!-- Tab 0: API Settings -->
+        <div id="content-settings" class="tab-content">
+            <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+                <div class="text-center mb-8">
+                    <div class="bg-blue-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-cog text-3xl text-blue-600"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-800 mb-2">API Settings</h2>
+                    <p class="text-xl text-gray-600">Configure your API keys for LLM providers and Firecrawl</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto space-y-6">
+                    <!-- LLM Provider Selection -->
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border-2 border-blue-200">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">
+                            <i class="fas fa-robot text-blue-600 mr-2"></i>LLM Provider
+                        </h3>
+                        <p class="text-sm text-gray-600 mb-4">Select which AI model to use for website generation and outreach</p>
+
+                        <div class="grid md:grid-cols-4 gap-4 mb-4">
+                            <label class="relative flex items-center p-4 bg-white rounded-lg border-2 border-green-300 cursor-pointer hover:border-green-500 transition-all">
+                                <input type="radio" name="llm-provider" value="default" checked class="mr-3">
+                                <div>
+                                    <div class="font-bold text-gray-800">DEFAULT</div>
+                                    <div class="text-sm text-green-600">Included ✓</div>
+                                </div>
+                            </label>
+                            <label class="relative flex items-center p-4 bg-white rounded-lg border-2 border-gray-200 cursor-pointer hover:border-blue-400 transition-all">
+                                <input type="radio" name="llm-provider" value="gemini" class="mr-3">
+                                <div>
+                                    <div class="font-bold text-gray-800">Google Gemini</div>
+                                    <div class="text-sm text-gray-600">BYO API</div>
+                                </div>
+                            </label>
+                            <label class="relative flex items-center p-4 bg-white rounded-lg border-2 border-gray-200 cursor-pointer hover:border-blue-400 transition-all">
+                                <input type="radio" name="llm-provider" value="openai" class="mr-3">
+                                <div>
+                                    <div class="font-bold text-gray-800">OpenAI</div>
+                                    <div class="text-sm text-gray-600">BYO API</div>
+                                </div>
+                            </label>
+                            <label class="relative flex items-center p-4 bg-white rounded-lg border-2 border-gray-200 cursor-pointer hover:border-blue-400 transition-all">
+                                <input type="radio" name="llm-provider" value="claude" class="mr-3">
+                                <div>
+                                    <div class="font-bold text-gray-800">Anthropic Claude</div>
+                                    <div class="text-sm text-gray-600">BYO API</div>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- DEFAULT Info (shown by default) -->
+                        <div id="default-api-section" class="mt-4">
+                            <div class="bg-green-50 border-2 border-green-200 rounded-lg p-4">
+                                <h4 class="font-bold text-green-800 mb-2">
+                                    <i class="fas fa-check-circle text-green-600 mr-2"></i>Default AI Provider Included
+                                </h4>
+                                <p class="text-sm text-gray-700 mb-3">
+                                    You're using the built-in Gemini 2.5 Flash API at no additional cost. This is perfect for getting started!
+                                </p>
+                                <div class="text-xs text-gray-600 space-y-1">
+                                    <div>• <strong>Model:</strong> Google Gemini 2.5 Flash</div>
+                                    <div>• <strong>Cost:</strong> Included with your purchase</div>
+                                    <div>• <strong>Speed:</strong> Fast response times</div>
+                                    <div>• <strong>Quality:</strong> Professional-grade AI generation</div>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-3 italic">
+                                    💡 Want to use your own API? Select a provider above and enter your API key.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Gemini API Key -->
+                        <div id="gemini-api-section" class="mt-4 hidden">
+                            <label class="block text-gray-800 font-bold mb-2">Google Gemini API Key:</label>
+                            <input id="gemini-api-key" type="password" placeholder="Enter your Gemini API key (or leave empty for default)"
+                                   class="w-full p-3 rounded-lg border-2 border-gray-200 focus:border-blue-400 focus:outline-none mb-3">
+                            <label class="block text-gray-800 font-bold mb-2">Gemini Model:</label>
+                            <select id="gemini-model" class="w-full p-3 rounded-lg border-2 border-gray-200 focus:border-blue-400 focus:outline-none">
+                                <option value="gemini-2.5-flash">Gemini 2.5 Flash (Best Price/Performance) ⭐</option>
+                                <option value="gemini-2.5-pro">Gemini 2.5 Pro (Most Capable)</option>
+                                <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash-Lite (Fastest, Cheapest)</option>
+                                <option value="gemini-2.0-flash">Gemini 2.0 Flash (1M Context)</option>
+                            </select>
+                            <p class="text-sm text-gray-500 mt-1">Get your API key at <a href="https://aistudio.google.com/apikey" target="_blank" class="text-blue-600 hover:underline">Google AI Studio</a></p>
+                        </div>
+
+                        <!-- OpenAI API Key -->
+                        <div id="openai-api-section" class="mt-4 hidden">
+                            <label class="block text-gray-800 font-bold mb-2">OpenAI API Key:</label>
+                            <input id="openai-api-key" type="password" placeholder="Enter your OpenAI API key (required)"
+                                   class="w-full p-3 rounded-lg border-2 border-gray-200 focus:border-blue-400 focus:outline-none mb-3">
+                            <label class="block text-gray-800 font-bold mb-2">OpenAI Model:</label>
+                            <select id="openai-model" class="w-full p-3 rounded-lg border-2 border-gray-200 focus:border-blue-400 focus:outline-none">
+                                <option value="gpt-5">GPT-5 (Best Reasoning & Coding) ⭐</option>
+                                <option value="gpt-5-mini">GPT-5 Mini (Balanced)</option>
+                                <option value="gpt-5-nano">GPT-5 Nano (Fast & Cheap)</option>
+                                <option value="gpt-4.1">GPT-4.1 (Instruction Following)</option>
+                                <option value="gpt-4.1-mini">GPT-4.1 Mini</option>
+                                <option value="gpt-4o">GPT-4o (Multimodal)</option>
+                                <option value="gpt-4o-mini">GPT-4o Mini</option>
+                            </select>
+                            <p class="text-sm text-gray-500 mt-1">Get your API key at <a href="https://platform.openai.com/api-keys" target="_blank" class="text-blue-600 hover:underline">OpenAI Platform</a></p>
+                        </div>
+
+                        <!-- Claude API Key -->
+                        <div id="claude-api-section" class="mt-4 hidden">
+                            <label class="block text-gray-800 font-bold mb-2">Anthropic Claude API Key:</label>
+                            <input id="claude-api-key" type="password" placeholder="Enter your Claude API key (required)"
+                                   class="w-full p-3 rounded-lg border-2 border-gray-200 focus:border-blue-400 focus:outline-none mb-3">
+                            <label class="block text-gray-800 font-bold mb-2">Claude Model:</label>
+                            <select id="claude-model" class="w-full p-3 rounded-lg border-2 border-gray-200 focus:border-blue-400 focus:outline-none">
+                                <option value="claude-sonnet-4-5-20250929">Claude Sonnet 4.5 (Best for Coding) ⭐</option>
+                                <option value="claude-opus-4-1-20250805">Claude Opus 4.1 (Most Intelligent)</option>
+                                <option value="claude-sonnet-4-20250514">Claude Sonnet 4</option>
+                                <option value="claude-opus-4-20250514">Claude Opus 4</option>
+                                <option value="claude-3-5-haiku-20241022">Claude 3.5 Haiku (Fast & Cheap)</option>
+                            </select>
+                            <p class="text-sm text-gray-500 mt-1">Get your API key at <a href="https://console.anthropic.com/settings/keys" target="_blank" class="text-blue-600 hover:underline">Anthropic Console</a></p>
+                        </div>
+                    </div>
+
+                    <!-- Firecrawl API Key -->
+                    <div class="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-6 border-2 border-orange-200">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">
+                            <i class="fas fa-fire text-orange-600 mr-2"></i>Firecrawl API
+                        </h3>
+                        <p class="text-sm text-gray-600 mb-4">Professional website scraping with Firecrawl</p>
+
+                        <label class="block text-gray-800 font-bold mb-2">Firecrawl API Key:</label>
+                        <input id="firecrawl-api-key" type="password" placeholder="Enter your Firecrawl API key (or leave empty for default)"
+                               class="w-full p-3 rounded-lg border-2 border-gray-200 focus:border-orange-400 focus:outline-none">
+                        <p class="text-sm text-gray-500 mt-1">Get your API key at <a href="https://www.firecrawl.dev/" target="_blank" class="text-orange-600 hover:underline">Firecrawl</a></p>
+                    </div>
+
+                    <!-- Token Settings -->
+                    <div class="bg-gradient-to-r from-green-50 to-teal-50 rounded-xl p-6 border-2 border-green-200">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">
+                            <i class="fas fa-sliders-h text-green-600 mr-2"></i>Output Quality & Token Settings
+                        </h3>
+                        <p class="text-sm text-gray-600 mb-4">Control the quality and length of AI-generated content</p>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-800 font-bold mb-2">
+                                Max Tokens for Website Generation: <span id="website-tokens-value" class="text-primary">8000</span>
+                            </label>
+                            <input id="website-tokens-slider" type="range" min="2000" max="16000" step="1000" value="8000"
+                                   class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                            <div class="flex justify-between text-xs text-gray-600 mt-1">
+                                <span>2K (Basic)</span>
+                                <span>8K (Balanced)</span>
+                                <span>16K (Detailed)</span>
+                            </div>
+                            <div class="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                                <p class="text-sm text-gray-700">
+                                    <strong>💡 What this means:</strong><br>
+                                    <span class="text-xs">
+                                        • <strong>2K-4K tokens:</strong> Basic website (~1-2 pages worth). Faster, cheaper. Good for simple sites.<br>
+                                        • <strong>6K-8K tokens:</strong> Standard website (~3-4 pages worth). Balanced quality & cost. <strong>Recommended</strong>.<br>
+                                        • <strong>10K-16K tokens:</strong> Detailed website (~5-8 pages worth). Slower, more expensive, but very detailed.
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-800 font-bold mb-2">
+                                Max Tokens for Outreach: <span id="outreach-tokens-value" class="text-primary">3000</span>
+                            </label>
+                            <input id="outreach-tokens-slider" type="range" min="500" max="5000" step="500" value="3000"
+                                   class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                            <div class="flex justify-between text-xs text-gray-600 mt-1">
+                                <span>500 (Concise)</span>
+                                <span>3K (Standard)</span>
+                                <span>5K (Detailed)</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                            <p class="text-sm text-gray-700">
+                                <strong>⚠️ Token Cost Warning:</strong> Higher token limits = more detailed content BUT higher API costs.
+                                Each provider charges differently:
+                            </p>
+                            <ul class="text-xs text-gray-600 mt-2 ml-4 list-disc">
+                                <li><strong>Gemini 2.5 Flash:</strong> Most affordable (~$0.001/1K tokens)</li>
+                                <li><strong>GPT-4o:</strong> Moderate cost (~$0.005/1K tokens)</li>
+                                <li><strong>Claude 3.5 Sonnet:</strong> Premium pricing (~$0.015/1K tokens)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Save Button -->
+                    <div class="flex gap-4">
+                        <button id="save-api-settings-btn" class="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-4 px-6 rounded-lg transition-all shadow-md">
+                            <i class="fas fa-save mr-2"></i>Save API Settings
+                        </button>
+                        <button id="test-api-connection-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-4 px-6 rounded-lg transition-all shadow-md">
+                            <i class="fas fa-check-circle mr-2"></i>Test Connection
+                        </button>
+                    </div>
+
+                    <!-- Status Message -->
+                    <div id="api-settings-status" class="hidden mt-4 p-4 rounded-lg"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 1: Projects Management -->
         <div id="content-projects" class="tab-content">
             <div class="bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
                 <div class="text-center mb-8">
@@ -551,93 +904,49 @@
         </div>
     </div>
 
-    <!-- Social Proof & CTA Section -->
-    <section class="bg-gray-900 text-white py-16 mt-16">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <h2 class="text-4xl font-bold mb-8">Join 2,847 Entrepreneurs Making $10K+/Month</h2>
-
-            <!-- Testimonials -->
-            <div class="grid md:grid-cols-3 gap-8 mb-12">
-                <div class="bg-white/10 backdrop-blur rounded-xl p-6">
-                    <div class="flex items-center mb-4">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%234285f4'/%3E%3C/svg%3E" class="w-12 h-12 rounded-full mr-4" alt="User">
-                        <div class="text-left">
-                            <div class="font-bold">Marcus Chen</div>
-                            <div class="text-sm text-gray-300">Digital Agency Owner</div>
-                        </div>
-                    </div>
-                    <p class="text-gray-300 italic">"Generated $23K in new clients in just 2 weeks using SiteClone Pro. The AI websites are incredible!"</p>
-                    <div class="text-yellow-400 text-xl mt-2">★★★★★</div>
-                </div>
-
-                <div class="bg-white/10 backdrop-blur rounded-xl p-6">
-                    <div class="flex items-center mb-4">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%2300d084'/%3E%3C/svg%3E" class="w-12 h-12 rounded-full mr-4" alt="User">
-                        <div class="text-left">
-                            <div class="font-bold">Sarah Williams</div>
-                            <div class="text-sm text-gray-300">Freelance Web Designer</div>
-                        </div>
-                    </div>
-                    <p class="text-gray-300 italic">"This tool literally 10x'd my productivity. I can now handle 5x more clients with better results."</p>
-                    <div class="text-yellow-400 text-xl mt-2">★★★★★</div>
-                </div>
-
-                <div class="bg-white/10 backdrop-blur rounded-xl p-6">
-                    <div class="flex items-center mb-4">
-                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23ff6b35'/%3E%3C/svg%3E" class="w-12 h-12 rounded-full mr-4" alt="User">
-                        <div class="text-left">
-                            <div class="font-bold">David Rodriguez</div>
-                            <div class="text-sm text-gray-300">Marketing Consultant</div>
-                        </div>
-                    </div>
-                    <p class="text-gray-300 italic">"Closed 8 new deals this month. The outreach templates are pure gold!"</p>
-                    <div class="text-yellow-400 text-xl mt-2">★★★★★</div>
-                </div>
-            </div>
-
-            <!-- Final CTA -->
-            <div class="bg-gradient-to-r from-appsumo to-appsumo-dark rounded-2xl p-8 max-w-4xl mx-auto">
-                <div class="text-6xl font-bold text-yellow-300 mb-4">$69</div>
-                <div class="text-2xl mb-6">One-Time Payment • Lifetime Access</div>
-                <div class="grid md:grid-cols-2 gap-8 text-left mb-8">
-                    <div>
-                        <h4 class="font-bold text-xl mb-4">✅ What You Get:</h4>
-                        <ul class="space-y-2">
-                            <li>• Unlimited website scraping</li>
-                            <li>• AI website recreation</li>
-                            <li>• Lead generation tools</li>
-                            <li>• Email & proposal templates</li>
-                            <li>• Commercial license</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold text-xl mb-4">🚀 Perfect For:</h4>
-                        <ul class="space-y-2">
-                            <li>• Web designers & developers</li>
-                            <li>• Digital marketing agencies</li>
-                            <li>• Freelancers & consultants</li>
-                            <li>• Business owners</li>
-                            <li>• Anyone wanting more clients</li>
-                        </ul>
-                    </div>
-                </div>
-                <button class="bg-yellow-400 text-gray-900 px-12 py-4 rounded-xl text-2xl font-bold hover:bg-yellow-300 transition-colors shadow-2xl">
-                    <i class="fas fa-shopping-cart mr-3"></i>GET LIFETIME ACCESS NOW
-                </button>
-                <div class="text-sm mt-4 text-yellow-200">
-                    <i class="fas fa-lock mr-2"></i>60-Day Money-Back Guarantee • Secure Checkout
-                </div>
-            </div>
         </div>
-    </section>
+    </div>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="max-w-7xl mx-auto px-6 text-center">
-            <div class="text-2xl font-bold mb-2">SiteClone Pro</div>
-            <div class="text-gray-400 mb-4">The Ultimate Website Scraping & Lead Generation Tool</div>
-            <div class="text-sm text-gray-500">
-                © 2025 SiteClone Pro. All rights reserved. | <a href="#" class="hover:text-white">Privacy Policy</a> | <a href="#" class="hover:text-white">Terms of Service</a>
+    <footer class="bg-gray-800 text-white py-12 mt-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">SiteClone Pro</h3>
+                    <p class="text-gray-400">
+                        Turn any website into your next client with AI-powered automation.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Features</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Website Scraping</li>
+                        <li>AI Recreation</li>
+                        <li>Outreach Generator</li>
+                        <li>Project Management</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Support</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Documentation</li>
+                        <li>Video Tutorials</li>
+                        <li>Contact Support</li>
+                        <li>FAQ</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li>Terms of Service</li>
+                        <li>Privacy Policy</li>
+                        <li>Refund Policy</li>
+                        <li>License</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-400">
+                <p>&copy; 2025 SiteClone Pro. All rights reserved.</p>
             </div>
         </div>
     </footer>

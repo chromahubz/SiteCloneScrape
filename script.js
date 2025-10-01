@@ -6,6 +6,7 @@ let businessInfo = {};
 let generatedWebsite = null;
 let hostedSite = null;
 let modificationHistory = []; // Stack of previous versions for undo
+let redoHistory = []; // Stack for redo functionality
 
 // Input validation utilities
 const validators = {
@@ -171,8 +172,22 @@ document.addEventListener('DOMContentLoaded', function() {
             const contentId = tab.id.replace('tab-', 'content-');
             document.getElementById(contentId).classList.add('active');
 
-            // Scroll to top of the page smoothly
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // Scroll to the main content area of each tab
+            setTimeout(() => {
+                // For Recreate Site tab, scroll to the After preview section
+                if (tab.id === 'tab-recreate') {
+                    const afterSection = document.getElementById('after-preview-section');
+                    if (afterSection) {
+                        afterSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                } else {
+                    // For other tabs, scroll to the tab content
+                    const tabContent = document.getElementById(contentId);
+                    if (tabContent) {
+                        tabContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            }, 100);
         });
     });
 
@@ -189,6 +204,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('generate-outreach-btn').addEventListener('click', generateOutreach);
     document.getElementById('modify-website-btn').addEventListener('click', modifyWebsite);
     document.getElementById('undo-modification-btn').addEventListener('click', undoModification);
+    document.getElementById('redo-modification-btn').addEventListener('click', redoModification);
     document.getElementById('toggle-before-preview').addEventListener('click', toggleBeforePreview);
 
     // Business Intelligence - Scraped Content Toggle
@@ -722,7 +738,8 @@ function displayMultipleVersions(versions) {
 
     // Clear modification history when displaying new versions
     modificationHistory = [];
-    document.getElementById('undo-modification-btn').classList.add('hidden');
+    redoHistory = [];
+    updateUndoRedoButtons();
 
     const previewEl = document.getElementById('new-preview');
 
@@ -790,7 +807,8 @@ window.switchVersion = function(versionIndex) {
 
     // Clear modification history when switching versions
     modificationHistory = [];
-    document.getElementById('undo-modification-btn').classList.add('hidden');
+    redoHistory = [];
+    updateUndoRedoButtons();
 };
 
 // Modify Website with AI
@@ -818,6 +836,9 @@ async function modifyWebsite() {
             timestamp: new Date().toISOString(),
             request: modificationRequest
         });
+
+        // Clear redo history when making a new change
+        redoHistory = [];
 
         const response = await fetch(`${API_BASE}/api/modify-website`, {
             method: 'POST',
@@ -865,8 +886,8 @@ async function modifyWebsite() {
         // Clear the modification request
         document.getElementById('modification-request').value = '';
 
-        // Show undo button
-        document.getElementById('undo-modification-btn').classList.remove('hidden');
+        // Update button visibility
+        updateUndoRedoButtons();
 
         showNotification('✅ Website modified successfully!', 'success');
 
@@ -889,6 +910,12 @@ function undoModification() {
         showNotification('❌ No website to undo', 'error');
         return;
     }
+
+    // Save current state to redo history
+    redoHistory.push({
+        html: generatedWebsite.activeVersion.html,
+        timestamp: new Date().toISOString()
+    });
 
     // Get the previous version from history
     const previousVersion = modificationHistory.pop();
@@ -915,12 +942,77 @@ function undoModification() {
         }
     }
 
-    // Hide undo button if no more history
-    if (modificationHistory.length === 0) {
-        document.getElementById('undo-modification-btn').classList.add('hidden');
-    }
+    // Update button visibility
+    updateUndoRedoButtons();
 
     showNotification('↩️ Reverted to previous version', 'success');
+}
+
+// Redo last undone modification
+function redoModification() {
+    if (redoHistory.length === 0) {
+        showNotification('⚠️ No modifications to redo', 'warning');
+        return;
+    }
+
+    if (!generatedWebsite || !generatedWebsite.activeVersion) {
+        showNotification('❌ No website to redo', 'error');
+        return;
+    }
+
+    // Save current state to undo history
+    modificationHistory.push({
+        html: generatedWebsite.activeVersion.html,
+        timestamp: new Date().toISOString()
+    });
+
+    // Get the next version from redo history
+    const nextVersion = redoHistory.pop();
+
+    // Restore the next HTML
+    generatedWebsite.activeVersion.html = nextVersion.html;
+
+    // Find the active version index and update it
+    if (generatedWebsite.versions) {
+        const activeIndex = generatedWebsite.versions.findIndex(v =>
+            v.versionId === generatedWebsite.activeVersion.versionId
+        );
+        if (activeIndex !== -1) {
+            generatedWebsite.versions[activeIndex].html = nextVersion.html;
+        }
+    }
+
+    // Update the preview iframe
+    const activePreview = document.querySelector('.version-preview:not(.hidden)');
+    if (activePreview) {
+        const iframe = activePreview.querySelector('iframe');
+        if (iframe) {
+            iframe.srcdoc = nextVersion.html;
+        }
+    }
+
+    // Update button visibility
+    updateUndoRedoButtons();
+
+    showNotification('↪️ Restored to next version', 'success');
+}
+
+// Update undo/redo button visibility
+function updateUndoRedoButtons() {
+    const undoBtn = document.getElementById('undo-modification-btn');
+    const redoBtn = document.getElementById('redo-modification-btn');
+
+    if (modificationHistory.length > 0) {
+        undoBtn.classList.remove('hidden');
+    } else {
+        undoBtn.classList.add('hidden');
+    }
+
+    if (redoHistory.length > 0) {
+        redoBtn.classList.remove('hidden');
+    } else {
+        redoBtn.classList.add('hidden');
+    }
 }
 
 // Toggle before preview visibility

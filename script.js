@@ -709,12 +709,6 @@ async function recreateWebsite() {
 
         showNotification(`${data.totalVersions} website version${data.totalVersions > 1 ? 's' : ''} generated! Pick your favorite and export it.`, 'success');
 
-        // Auto-advance to next tab after 5 seconds
-        setTimeout(() => {
-            document.getElementById('tab-outreach').click();
-            showNotification('📧 Ready to generate outreach materials!', 'info', 3000);
-        }, 5000);
-
     } catch (error) {
         showNotification('Error recreating website: ' + error.message, 'error');
     } finally {

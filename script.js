@@ -170,6 +170,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show corresponding content
             const contentId = tab.id.replace('tab-', 'content-');
             document.getElementById(contentId).classList.add('active');
+
+            // Scroll to top of the page smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     });
 

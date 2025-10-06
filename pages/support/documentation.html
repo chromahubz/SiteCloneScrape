@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation - SiteClone Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-6">
+        <div class="max-w-7xl mx-auto px-6">
+            <a href="/" class="text-white hover:text-gray-200 mb-4 inline-block">
+                <i class="fas fa-arrow-left mr-2"></i>Back to Home
+            </a>
+            <h1 class="text-4xl font-bold">Documentation</h1>
+            <p class="text-xl text-blue-100 mt-2">Complete guides, tutorials, and API documentation</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid md:grid-cols-4 gap-6 mb-8">
+            <div class="md:col-span-1">
+                <div class="bg-white rounded-lg shadow-lg p-6 sticky top-6">
+                    <h3 class="font-bold text-lg mb-4 text-gray-800">Quick Navigation</h3>
+                    <nav class="space-y-2">
+                        <a href="#getting-started" class="block text-blue-600 hover:text-blue-800 py-2 border-l-2 border-blue-600 pl-3">
+                            <i class="fas fa-play-circle mr-2"></i>Getting Started
+                        </a>
+                        <a href="#scraping-guide" class="block text-gray-600 hover:text-blue-600 py-2 pl-3 hover:border-l-2 hover:border-blue-600">
+                            <i class="fas fa-spider mr-2"></i>Scraping Guide
+                        </a>
+                        <a href="#ai-recreation" class="block text-gray-600 hover:text-blue-600 py-2 pl-3 hover:border-l-2 hover:border-blue-600">
+                            <i class="fas fa-brain mr-2"></i>AI Recreation
+                        </a>
+                        <a href="#outreach" class="block text-gray-600 hover:text-blue-600 py-2 pl-3 hover:border-l-2 hover:border-blue-600">
+                            <i class="fas fa-envelope mr-2"></i>Outreach Tools
+                        </a>
+                        <a href="#api" class="block text-gray-600 hover:text-blue-600 py-2 pl-3 hover:border-l-2 hover:border-blue-600">
+                            <i class="fas fa-code mr-2"></i>API Reference
+                        </a>
+                        <a href="#troubleshooting" class="block text-gray-600 hover:text-blue-600 py-2 pl-3 hover:border-l-2 hover:border-blue-600">
+                            <i class="fas fa-wrench mr-2"></i>Troubleshooting
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <div class="md:col-span-3">
+                <div class="bg-white rounded-2xl shadow-lg p-8 mb-6" id="getting-started">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-green-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-play-circle text-2xl text-green-600"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800">Getting Started</h2>
+                    </div>
+
+                    <div class="prose max-w-none">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Quick Start Guide</h3>
+                        <p class="text-gray-700 mb-4">
+                            Welcome to SiteClone Pro! This guide will help you get started in minutes.
+                        </p>
+
+                        <div class="bg-blue-50 border-l-4 border-blue-600 p-4 mb-6">
+                            <h4 class="font-bold mb-2"><i class="fas fa-info-circle text-blue-600 mr-2"></i>Prerequisites</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>- Valid AppSumo license code (or subscription)</li>
+                                <li>- API keys for AI models (GPT-4, Claude, or Gemini)</li>
+                                <li>- Modern web browser (Chrome, Firefox, Safari, or Edge)</li>
+                            </ul>
+                        </div>
+
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">Step 1: Account Setup</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                            <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                                <li>Visit the SiteClone Pro dashboard</li>
+                                <li>Click "Get Started" or "Sign Up"</li>
+                                <li>Enter your AppSumo license code or create a subscription account</li>
+                                <li>Verify your email address</li>
+                                <li>Complete your profile setup</li>
+                            </ol>
+                        </div>
+
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">Step 2: Configure API Keys</h4>
+                        <p class="text-gray-700 mb-3">To use AI recreation features, add your API keys:</p>
+                        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                            <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                                <li>Navigate to Settings > API Configuration</li>
+                                <li>Add your OpenAI API key (for GPT-4)</li>
+                                <li>Add your Anthropic API key (for Claude)</li>
+                                <li>Add your Google API key (for Gemini)</li>
+                                <li>Click "Save" and test the connection</li>
+                            </ol>
+                        </div>
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-3 mb-4">
+                            <p class="text-sm text-gray-700"><strong>Note:</strong> You only need one API key to get started. We recommend starting with Gemini for cost-effectiveness.</p>
+                        </div>
+
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">Step 3: Your First Project</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                            <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                                <li>Click "New Project" or "Scrape Website"</li>
+                                <li>Enter a target URL (e.g., https://example.com)</li>
+                                <li>Click "Start Scraping"</li>
+                                <li>Wait for the scraping process to complete (1-3 minutes)</li>
+                                <li>Review the extracted data</li>
+                                <li>Click "Generate Design" to create an AI-powered recreation</li>
+                            </ol>
+                        </div>
+
+                        <div class="bg-green-50 border-l-4 border-green-600 p-4 mb-6">
+                            <h4 class="font-bold mb-2"><i class="fas fa-check-circle text-green-600 mr-2"></i>Success!</h4>
+                            <p class="text-sm text-gray-700">You've just created your first website recreation. Download the files, generate outreach emails, or save the project for later.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-8 mb-6" id="scraping-guide">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-blue-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-spider text-2xl text-blue-600"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800">Website Scraping Guide</h2>
+                    </div>
+
+                    <div class="prose max-w-none">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">How Scraping Works</h3>
+                        <p class="text-gray-700 mb-4">
+                            Our scraping engine uses Firecrawl to intelligently extract website content, structure, and assets.
+                        </p>
+
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">Supported Content Types</h4>
+                        <div class="grid md:grid-cols-2 gap-4 mb-6">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h5 class="font-bold mb-2"><i class="fas fa-file-alt text-blue-600 mr-2"></i>Text Content</h5>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>- Headings and body text</li>
+                                    <li>- Navigation menus</li>
+                                    <li>- Contact information</li>
+                                    <li>- Business details</li>
+                                </ul>
+                            </div>
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h5 class="font-bold mb-2"><i class="fas fa-images text-purple-600 mr-2"></i>Media Assets</h5>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>- Images (JPG, PNG, WebP)</li>
+                                    <li>- Logos and icons</li>
+                                    <li>- Background images</li>
+                                    <li>- Alt text and captions</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">Best Practices</h4>
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-start bg-gray-50 p-3 rounded">
+                                <i class="fas fa-check text-green-600 mr-3 mt-1"></i>
+                                <div>
+                                    <strong class="block">Use Full URLs</strong>
+                                    <p class="text-sm text-gray-700">Always include https:// in your URLs</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start bg-gray-50 p-3 rounded">
+                                <i class="fas fa-check text-green-600 mr-3 mt-1"></i>
+                                <div>
+                                    <strong class="block">Start with Homepage</strong>
+                                    <p class="text-sm text-gray-700">Scrape the homepage first for best sitemap discovery</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start bg-gray-50 p-3 rounded">
+                                <i class="fas fa-check text-green-600 mr-3 mt-1"></i>
+                                <div>
+                                    <strong class="block">Review Data Quality</strong>
+                                    <p class="text-sm text-gray-700">Check the scraped data before generating designs</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">Limitations</h4>
+                        <div class="bg-orange-50 border-l-4 border-orange-500 p-4 mb-6">
+                            <ul class="text-sm text-gray-700 space-y-2">
+                                <li>- Maximum 100 pages per scrape session</li>
+                                <li>- JavaScript-heavy sites may have reduced data extraction</li>
+                                <li>- Login-protected content cannot be accessed</li>
+                                <li>- Some sites may block scraping attempts</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-8 mb-6" id="ai-recreation">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-purple-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-brain text-2xl text-purple-600"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800">AI Recreation Guide</h2>
+                    </div>
+
+                    <div class="prose max-w-none">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Choosing an AI Model</h3>
+
+                        <div class="overflow-x-auto mb-6">
+                            <table class="min-w-full bg-white border border-gray-200">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="px-4 py-3 text-left text-sm font-bold text-gray-700">Model</th>
+                                        <th class="px-4 py-3 text-left text-sm font-bold text-gray-700">Best For</th>
+                                        <th class="px-4 py-3 text-left text-sm font-bold text-gray-700">Cost</th>
+                                        <th class="px-4 py-3 text-left text-sm font-bold text-gray-700">Speed</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-4 py-3 text-sm font-semibold">GPT-4</td>
+                                        <td class="px-4 py-3 text-sm">Complex layouts, creative designs</td>
+                                        <td class="px-4 py-3 text-sm">$$$</td>
+                                        <td class="px-4 py-3 text-sm">Medium</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 text-sm font-semibold">Claude</td>
+                                        <td class="px-4 py-3 text-sm">Professional sites, clean code</td>
+                                        <td class="px-4 py-3 text-sm">$$</td>
+                                        <td class="px-4 py-3 text-sm">Fast</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-3 text-sm font-semibold">Gemini</td>
+                                        <td class="px-4 py-3 text-sm">Quick iterations, budget projects</td>
+                                        <td class="px-4 py-3 text-sm">$</td>
+                                        <td class="px-4 py-3 text-sm">Very Fast</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">Customization Options</h4>
+                        <div class="grid md:grid-cols-2 gap-4 mb-6">
+                            <div class="border-2 border-gray-200 p-4 rounded-lg">
+                                <h5 class="font-bold mb-2">Color Schemes</h5>
+                                <p class="text-sm text-gray-700 mb-2">Choose from preset color palettes or let AI select based on brand:</p>
+                                <ul class="text-xs text-gray-600 space-y-1">
+                                    <li>- Professional Blue</li>
+                                    <li>- Modern Purple</li>
+                                    <li>- Eco Green</li>
+                                    <li>- Custom Brand Colors</li>
+                                </ul>
+                            </div>
+                            <div class="border-2 border-gray-200 p-4 rounded-lg">
+                                <h5 class="font-bold mb-2">Layout Styles</h5>
+                                <p class="text-sm text-gray-700 mb-2">Select layout preference:</p>
+                                <ul class="text-xs text-gray-600 space-y-1">
+                                    <li>- One-page scrolling</li>
+                                    <li>- Multi-page traditional</li>
+                                    <li>- Grid-based portfolio</li>
+                                    <li>- AI-recommended</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-8 mb-6" id="outreach">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-green-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-envelope text-2xl text-green-600"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800">Outreach Tools Guide</h2>
+                    </div>
+
+                    <div class="prose max-w-none">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Email Generation</h3>
+                        <p class="text-gray-700 mb-4">
+                            Generate personalized cold emails based on scraped website data.
+                        </p>
+
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">Customization Variables</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg mb-4 font-mono text-sm">
+                            <div class="space-y-2 text-gray-700">
+                                <div><span class="text-blue-600">{{company_name}}</span> - Business name from website</div>
+                                <div><span class="text-blue-600">{{industry}}</span> - Auto-detected industry</div>
+                                <div><span class="text-blue-600">{{contact_name}}</span> - Contact person (if found)</div>
+                                <div><span class="text-blue-600">{{pain_points}}</span> - AI-identified issues</div>
+                                <div><span class="text-blue-600">{{your_name}}</span> - Your name from profile</div>
+                            </div>
+                        </div>
+
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">Email Templates</h4>
+                        <p class="text-gray-700 mb-3">Three built-in templates optimized for different scenarios:</p>
+                        <ul class="space-y-2 mb-4">
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope text-blue-600 mr-3 mt-1"></i>
+                                <div>
+                                    <strong>Website Redesign:</strong> For businesses with outdated designs
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope text-purple-600 mr-3 mt-1"></i>
+                                <div>
+                                    <strong>SEO Audit:</strong> Lead with value and technical insights
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope text-green-600 mr-3 mt-1"></i>
+                                <div>
+                                    <strong>Mobile Optimization:</strong> For non-responsive websites
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-8 mb-6" id="api">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-orange-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-code text-2xl text-orange-600"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800">API Reference</h2>
+                    </div>
+
+                    <div class="prose max-w-none">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">REST API</h3>
+                        <p class="text-gray-700 mb-4">
+                            Integrate SiteClone Pro into your own applications with our REST API.
+                        </p>
+
+                        <div class="bg-blue-50 border-l-4 border-blue-600 p-4 mb-6">
+                            <h4 class="font-bold mb-2">Base URL</h4>
+                            <code class="text-sm bg-white px-2 py-1 rounded">https://api.siteclonepro.com/v1</code>
+                        </div>
+
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">Authentication</h4>
+                        <div class="bg-gray-50 p-4 rounded-lg mb-4 font-mono text-sm">
+                            <div class="text-gray-500 mb-1">// Include your API key in headers</div>
+                            <div class="text-gray-700">Authorization: Bearer YOUR_API_KEY</div>
+                        </div>
+
+                        <h4 class="text-xl font-bold text-gray-800 mb-3">Endpoints</h4>
+
+                        <div class="border-2 border-gray-200 rounded-lg p-4 mb-4">
+                            <div class="flex items-center mb-2">
+                                <span class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold mr-3">POST</span>
+                                <code class="text-sm">/scrape</code>
+                            </div>
+                            <p class="text-sm text-gray-700 mb-3">Scrape a website and extract data</p>
+                            <details class="text-sm">
+                                <summary class="cursor-pointer font-semibold">View Example</summary>
+                                <div class="bg-gray-900 text-green-400 p-3 rounded mt-2 font-mono text-xs overflow-x-auto">
+curl -X POST https://api.siteclonepro.com/v1/scrape \<br>
+  -H "Authorization: Bearer YOUR_API_KEY" \<br>
+  -H "Content-Type: application/json" \<br>
+  -d '{"url": "https://example.com", "max_pages": 50}'
+                                </div>
+                            </details>
+                        </div>
+
+                        <div class="border-2 border-gray-200 rounded-lg p-4 mb-4">
+                            <div class="flex items-center mb-2">
+                                <span class="bg-green-600 text-white px-3 py-1 rounded text-xs font-bold mr-3">POST</span>
+                                <code class="text-sm">/generate</code>
+                            </div>
+                            <p class="text-sm text-gray-700 mb-3">Generate AI-powered website design</p>
+                            <details class="text-sm">
+                                <summary class="cursor-pointer font-semibold">View Example</summary>
+                                <div class="bg-gray-900 text-green-400 p-3 rounded mt-2 font-mono text-xs overflow-x-auto">
+curl -X POST https://api.siteclonepro.com/v1/generate \<br>
+  -H "Authorization: Bearer YOUR_API_KEY" \<br>
+  -H "Content-Type: application/json" \<br>
+  -d '{"project_id": "proj_123", "model": "gpt-4"}'
+                                </div>
+                            </details>
+                        </div>
+
+                        <div class="border-2 border-gray-200 rounded-lg p-4 mb-4">
+                            <div class="flex items-center mb-2">
+                                <span class="bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold mr-3">GET</span>
+                                <code class="text-sm">/projects</code>
+                            </div>
+                            <p class="text-sm text-gray-700">List all projects</p>
+                        </div>
+
+                        <div class="border-2 border-gray-200 rounded-lg p-4 mb-6">
+                            <div class="flex items-center mb-2">
+                                <span class="bg-blue-600 text-white px-3 py-1 rounded text-xs font-bold mr-3">GET</span>
+                                <code class="text-sm">/projects/:id</code>
+                            </div>
+                            <p class="text-sm text-gray-700">Get project details</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg p-8 mb-6" id="troubleshooting">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-red-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-wrench text-2xl text-red-600"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-800">Troubleshooting</h2>
+                    </div>
+
+                    <div class="prose max-w-none">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Common Issues</h3>
+
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-orange-500 bg-orange-50 p-4">
+                                <h4 class="font-bold mb-2">Scraping Fails or Returns No Data</h4>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>- Check if the URL is accessible in a browser</li>
+                                    <li>- Ensure you're using https:// not http://</li>
+                                    <li>- The site may be blocking automated access</li>
+                                    <li>- Try scraping a different page from the same site</li>
+                                </ul>
+                            </div>
+
+                            <div class="border-l-4 border-orange-500 bg-orange-50 p-4">
+                                <h4 class="font-bold mb-2">AI Generation Takes Too Long</h4>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>- GPT-4 can take 2-5 minutes for complex sites</li>
+                                    <li>- Try using Gemini for faster results</li>
+                                    <li>- Check your API key rate limits</li>
+                                    <li>- Reduce the amount of content being processed</li>
+                                </ul>
+                            </div>
+
+                            <div class="border-l-4 border-orange-500 bg-orange-50 p-4">
+                                <h4 class="font-bold mb-2">API Key Errors</h4>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>- Verify the API key is correct and active</li>
+                                    <li>- Check if you have available credits</li>
+                                    <li>- Ensure the key has proper permissions</li>
+                                    <li>- Try regenerating the key from the provider</li>
+                                </ul>
+                            </div>
+
+                            <div class="border-l-4 border-orange-500 bg-orange-50 p-4">
+                                <h4 class="font-bold mb-2">Generated Design Not as Expected</h4>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>- Try a different AI model</li>
+                                    <li>- Review the scraped data for quality</li>
+                                    <li>- Add more specific customization options</li>
+                                    <li>- Generate multiple variations and compare</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-2xl p-8 text-center">
+            <h3 class="text-2xl font-bold mb-4">Need More Help?</h3>
+            <p class="text-blue-100 mb-6">Check out our video tutorials or contact support for personalized assistance.</p>
+            <div class="flex gap-4 justify-center">
+                <a href="/pages/support/video-tutorials.html" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-bold hover:bg-gray-100 transition-colors inline-block">
+                    <i class="fas fa-video mr-2"></i>Video Tutorials
+                </a>
+                <a href="/pages/support/contact.html" class="bg-purple-700 text-white px-6 py-3 rounded-lg font-bold hover:bg-purple-800 transition-colors inline-block">
+                    <i class="fas fa-headset mr-2"></i>Contact Support
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-gray-400">&copy; 2025 SiteClone Pro. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

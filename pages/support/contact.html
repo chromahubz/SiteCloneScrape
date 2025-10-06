@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Support - SiteClone Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <header class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-6">
+        <div class="max-w-7xl mx-auto px-6">
+            <a href="/" class="text-white hover:text-gray-200 mb-4 inline-block">
+                <i class="fas fa-arrow-left mr-2"></i>Back to Home
+            </a>
+            <h1 class="text-4xl font-bold">Contact Support</h1>
+            <p class="text-xl text-blue-100 mt-2">We're here to help you succeed with SiteClone Pro</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid md:grid-cols-3 gap-8 mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
+                <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-headset text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Live Chat</h3>
+                <p class="text-gray-600 text-sm mb-4">Chat with our support team in real-time</p>
+                <div class="text-sm text-gray-500 mb-4">
+                    <i class="fas fa-clock mr-1"></i>Mon-Fri, 9am-6pm EST
+                </div>
+                <button class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors w-full font-semibold">
+                    <i class="fas fa-comment mr-2"></i>Start Chat
+                </button>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
+                <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-envelope text-2xl text-green-600"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Email Support</h3>
+                <p class="text-gray-600 text-sm mb-4">Send us a detailed message</p>
+                <div class="text-sm text-gray-500 mb-4">
+                    <i class="fas fa-reply mr-1"></i>Response within 24 hours
+                </div>
+                <a href="mailto:support@siteclonepro.com" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors inline-block font-semibold">
+                    <i class="fas fa-paper-plane mr-2"></i>Email Us
+                </a>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-shadow">
+                <div class="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-book text-2xl text-purple-600"></i>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Documentation</h3>
+                <p class="text-gray-600 text-sm mb-4">Browse our knowledge base</p>
+                <div class="text-sm text-gray-500 mb-4">
+                    <i class="fas fa-search mr-1"></i>Find answers instantly
+                </div>
+                <a href="/pages/support/documentation.html" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors inline-block font-semibold">
+                    <i class="fas fa-book-open mr-2"></i>Read Docs
+                </a>
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+                <div class="flex items-center mb-6">
+                    <div class="bg-blue-100 p-3 rounded-full mr-4">
+                        <i class="fas fa-paper-plane text-2xl text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Send Us a Message</h2>
+                        <p class="text-gray-600">Fill out the form and we'll get back to you soon</p>
+                    </div>
+                </div>
+
+                <form class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Full Name *</label>
+                        <input type="text" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:outline-none" placeholder="John Smith">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address *</label>
+                        <input type="email" required class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:outline-none" placeholder="john@example.com">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Subject *</label>
+                        <select required class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:outline-none">
+                            <option value="">Select a topic...</option>
+                            <option value="technical">Technical Support</option>
+                            <option value="billing">Billing & Account</option>
+                            <option value="feature">Feature Request</option>
+                            <option value="api">API Questions</option>
+                            <option value="bug">Bug Report</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Priority</label>
+                        <div class="flex gap-4">
+                            <label class="flex items-center">
+                                <input type="radio" name="priority" value="low" class="mr-2" checked>
+                                <span class="text-sm">Low</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="priority" value="medium" class="mr-2">
+                                <span class="text-sm">Medium</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="priority" value="high" class="mr-2">
+                                <span class="text-sm">High</span>
+                            </label>
+                            <label class="flex items-center">
+                                <input type="radio" name="priority" value="urgent" class="mr-2">
+                                <span class="text-sm">Urgent</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Message *</label>
+                        <textarea required rows="6" class="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-600 focus:outline-none" placeholder="Please describe your issue or question in detail..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Attachments (Optional)</label>
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-600 transition-colors cursor-pointer">
+                            <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                            <p class="text-sm text-gray-600">Click to upload files or drag and drop</p>
+                            <p class="text-xs text-gray-500 mt-1">PNG, JPG, PDF up to 10MB</p>
+                            <input type="file" class="hidden" multiple accept=".png,.jpg,.jpeg,.pdf">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-lg font-bold hover:from-blue-700 hover:to-purple-700 transition-colors">
+                        <i class="fas fa-paper-plane mr-2"></i>Send Message
+                    </button>
+                </form>
+
+                <p class="text-xs text-gray-500 mt-4 text-center">
+                    By submitting this form, you agree to our Privacy Policy and Terms of Service.
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-purple-100 p-3 rounded-full mr-4">
+                            <i class="fas fa-info-circle text-2xl text-purple-600"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800">Contact Information</h2>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-blue-50 p-2 rounded mr-3 mt-1">
+                                <i class="fas fa-envelope text-blue-600"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-800">Email</div>
+                                <a href="mailto:support@siteclonepro.com" class="text-blue-600 hover:text-blue-700">support@siteclonepro.com</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-green-50 p-2 rounded mr-3 mt-1">
+                                <i class="fas fa-phone text-green-600"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-800">Phone</div>
+                                <a href="tel:+18005551234" class="text-blue-600 hover:text-blue-700">+1 (800) 555-1234</a>
+                                <p class="text-xs text-gray-500">Mon-Fri, 9am-6pm EST</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-purple-50 p-2 rounded mr-3 mt-1">
+                                <i class="fas fa-map-marker-alt text-purple-600"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-800">Address</div>
+                                <p class="text-gray-600 text-sm">
+                                    123 Tech Street, Suite 456<br>
+                                    San Francisco, CA 94105<br>
+                                    United States
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start">
+                            <div class="bg-orange-50 p-2 rounded mr-3 mt-1">
+                                <i class="fas fa-clock text-orange-600"></i>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-800">Business Hours</div>
+                                <p class="text-gray-600 text-sm">
+                                    Monday - Friday: 9:00 AM - 6:00 PM EST<br>
+                                    Saturday: 10:00 AM - 4:00 PM EST<br>
+                                    Sunday: Closed
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl shadow-lg p-8 text-white">
+                    <h3 class="text-2xl font-bold mb-4">Connect With Us</h3>
+                    <p class="text-blue-100 mb-6">Follow us on social media for updates, tips, and community support.</p>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="#" class="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg p-3 text-center transition-colors">
+                            <i class="fab fa-twitter text-2xl mb-2"></i>
+                            <div class="text-sm font-semibold">Twitter</div>
+                        </a>
+                        <a href="#" class="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg p-3 text-center transition-colors">
+                            <i class="fab fa-facebook text-2xl mb-2"></i>
+                            <div class="text-sm font-semibold">Facebook</div>
+                        </a>
+                        <a href="#" class="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg p-3 text-center transition-colors">
+                            <i class="fab fa-youtube text-2xl mb-2"></i>
+                            <div class="text-sm font-semibold">YouTube</div>
+                        </a>
+                        <a href="#" class="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg p-3 text-center transition-colors">
+                            <i class="fab fa-discord text-2xl mb-2"></i>
+                            <div class="text-sm font-semibold">Discord</div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-yellow-50 border-l-4 border-yellow-500 rounded-lg p-6">
+                    <div class="flex items-start">
+                        <i class="fas fa-lightbulb text-yellow-600 text-2xl mr-3 mt-1"></i>
+                        <div>
+                            <h4 class="font-bold text-gray-800 mb-2">Before Contacting Support</h4>
+                            <ul class="text-sm text-gray-700 space-y-1">
+                                <li>- Check the <a href="/pages/support/faq.html" class="text-blue-600 hover:underline">FAQ page</a> for quick answers</li>
+                                <li>- Browse the <a href="/pages/support/documentation.html" class="text-blue-600 hover:underline">documentation</a> for detailed guides</li>
+                                <li>- Watch our <a href="/pages/support/video-tutorials.html" class="text-blue-600 hover:underline">video tutorials</a> for visual help</li>
+                                <li>- Search our community Discord for similar issues</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-lg p-8">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Frequently Asked Questions</h3>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="border-l-4 border-blue-600 pl-4">
+                    <h4 class="font-bold mb-2">How quickly will I get a response?</h4>
+                    <p class="text-sm text-gray-700">Our support team typically responds within 24 hours for email inquiries. Live chat responses are immediate during business hours.</p>
+                </div>
+                <div class="border-l-4 border-purple-600 pl-4">
+                    <h4 class="font-bold mb-2">Do you offer phone support?</h4>
+                    <p class="text-sm text-gray-700">Yes! Phone support is available for urgent issues and enterprise customers. Call us at +1 (800) 555-1234 during business hours.</p>
+                </div>
+                <div class="border-l-4 border-green-600 pl-4">
+                    <h4 class="font-bold mb-2">Can you help with custom development?</h4>
+                    <p class="text-sm text-gray-700">Absolutely! Contact our sales team for custom development, white-label solutions, and enterprise integrations.</p>
+                </div>
+                <div class="border-l-4 border-orange-600 pl-4">
+                    <h4 class="font-bold mb-2">Is support included in all plans?</h4>
+                    <p class="text-sm text-gray-700">Yes! Email and live chat support is included with all plans. Priority support with faster response times is available for premium users.</p>
+                </div>
+            </div>
+
+            <div class="text-center mt-8">
+                <a href="/pages/support/faq.html" class="inline-flex items-center text-blue-600 hover:text-blue-700 font-semibold">
+                    View All FAQs <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 text-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <p class="text-gray-400">&copy; 2025 SiteClone Pro. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

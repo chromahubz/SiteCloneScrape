@@ -18,14 +18,6 @@
   ],
   "routes": [
     {
-      "src": "/hosted-sites/(.*)",
-      "dest": "/"
-    },
-    {
-      "src": "/pages/(.*)",
-      "dest": "/"
-    },
-    {
       "src": "/api/(.*)",
       "dest": "server.js"
     },

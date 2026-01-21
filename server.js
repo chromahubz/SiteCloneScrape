@@ -2016,6 +2016,17 @@ app.post('/api/config/test', async (req, res) => {
     }
 });
 
+// Serve pages directory (features, support, legal pages)
+app.get('/pages/*', (req, res) => {
+    const filePath = path.join(__dirname, req.path);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            res.status(404).send('Page not found');
+        }
+    });
+});
+
+// Serve main index page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });

@@ -22,7 +22,15 @@
       "dest": "server.js"
     },
     {
-      "src": "/(.*\\.(js|css|html|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
+      "src": "/pages/(.*)",
+      "dest": "server.js"
+    },
+    {
+      "src": "/hosted/(.*)",
+      "dest": "server.js"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
       "dest": "/$1"
     },
     {

@@ -1,0 +1,55 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node",
+      "config": {
+        "maxLambdaSize": "50mb",
+        "includeFiles": [
+          "hosted-sites/**",
+          "pages/**",
+          "index.html",
+          "script.js",
+          ".env"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/hosted-sites/(.*)",
+      "dest": "/"
+    },
+    {
+      "src": "/pages/(.*)",
+      "dest": "/"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "server.js"
+    },
+    {
+      "src": "/(.*\\.(js|css|html|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "server.js"
+    }
+  ],
+  "env": {
+    "GOOGLE_API_KEY": "@google_api_key",
+    "FIRECRAWL_API_KEY": "@firecrawl_api_key",
+    "OPENAI_API_KEY": "@openai_api_key",
+    "ANTHROPIC_API_KEY": "@anthropic_api_key",
+    "E2B_API_KEY": "@e2b_api_key"
+  },
+  "functions": {
+    "server.js": {
+      "memory": 3008,
+      "maxDuration": 60
+    }
+  },
+  "regions": ["iad1"]
+}

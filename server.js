@@ -2022,9 +2022,15 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 3003;
 
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 App Sumo Website Scraper & Builder running on http://localhost:${PORT}`);
-    console.log(`🤖 Gemini API: ${process.env.GOOGLE_API_KEY ? '✅ Configured' : '❌ Not configured'}`);
-    console.log(`🔥 Firecrawl API: ${firecrawl ? '✅ Professional scraping enabled' : '⚠️ Using enhanced fallback scraping'}`);
-    console.log(`🕷️ Ready to scrape and build websites with ${firecrawl ? 'professional' : 'enhanced'} capabilities!`);
-});
+// Only start server if not in Vercel environment (allows module export for Vercel)
+if (process.env.VERCEL !== '1' && require.main === module) {
+    app.listen(PORT, '0.0.0.0', () => {
+        console.log(`🚀 App Sumo Website Scraper & Builder running on http://localhost:${PORT}`);
+        console.log(`🤖 Gemini API: ${process.env.GOOGLE_API_KEY ? '✅ Configured' : '❌ Not configured'}`);
+        console.log(`🔥 Firecrawl API: ${firecrawl ? '✅ Professional scraping enabled' : '⚠️ Using enhanced fallback scraping'}`);
+        console.log(`🕷️ Ready to scrape and build websites with ${firecrawl ? 'professional' : 'enhanced'} capabilities!`);
+    });
+}
+
+// Export for Vercel serverless deployment
+module.exports = app;

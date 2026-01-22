@@ -1,21 +1,5 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "server.js",
-      "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "50mb",
-        "includeFiles": [
-          "hosted-sites/**",
-          "pages/**",
-          "index.html",
-          "script.js",
-          ".env"
-        ]
-      }
-    }
-  ],
   "routes": [
     {
       "src": "/api/(.*)",
@@ -48,7 +32,8 @@
   "functions": {
     "server.js": {
       "memory": 3008,
-      "maxDuration": 60
+      "maxDuration": 60,
+      "includeFiles": "**"
     }
   },
   "regions": ["iad1"]

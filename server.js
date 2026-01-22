@@ -90,6 +90,18 @@ let apiConfig = {
 app.use(cors());
 app.use(express.json({ limit: '50mb' })); // Increase limit for large scraped content
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Serve pages directory BEFORE static middleware (features, support, legal pages)
+app.get('/pages/*', (req, res) => {
+    const filePath = path.join(__dirname, req.path);
+    res.sendFile(filePath, (err) => {
+        if (err) {
+            res.status(404).send('Page not found');
+        }
+    });
+});
+
+// Static files middleware (only for local dev, Vercel serves via CDN)
 app.use(express.static('.'));
 
 // Store scraped data and projects
@@ -2014,16 +2026,6 @@ app.post('/api/config/test', async (req, res) => {
             message: `API test failed: ${error.message}`
         });
     }
-});
-
-// Serve pages directory (features, support, legal pages)
-app.get('/pages/*', (req, res) => {
-    const filePath = path.join(__dirname, req.path);
-    res.sendFile(filePath, (err) => {
-        if (err) {
-            res.status(404).send('Page not found');
-        }
-    });
 });
 
 // Serve main index page
